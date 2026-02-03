@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: labo_dz_app
+    restart: unless-stopped
+    working_dir: /var/www
+    volumes:
+      - ./:/var/www
+    networks:
+      - labo_dz_network
+
+  nginx:
+    image: nginx:alpine
+    container_name: labo_dz_nginx
+    restart: unless-stopped
+    ports:
+      - "8000:80"
+    volumes:
+      - ./:/var/www
+      - ./docker/nginx:/etc/nginx/conf.d
+    networks:
+      - labo_dz_network
+    depends_on:
+      - app
+
+  db:
+    image: mysql:8.0
+    container_name: labo_dz_db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: labo_dz
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_PASSWORD: password
+      MYSQL_USER: labo_dz_user
+    volumes:
+      - db_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    networks:
+      - labo_dz_network
+
+volumes:
+  db_data:
+
+networks:
+  labo_dz_network:
+    driver: bridge

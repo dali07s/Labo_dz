@@ -7,6 +7,7 @@ use App\Models\Patient;
 use App\Models\History;
 use App\Models\Analyse;
 use App\Models\Message;
+use App\Models\Request_reservation;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
 
@@ -21,9 +22,8 @@ class Labo_dzController extends Controller
     public function index()
     {
         $analyses = Analyse::all(); // Or use your preferred method to get the data
-        
+
         return view('Labo_dz', ['analyses' => $analyses]);
-       
     }
 
     /**
@@ -34,52 +34,44 @@ class Labo_dzController extends Controller
      */
     public function booking(Request $request)
     {
-         // Validate the request
-         $validator = Validator::make($request->all(), [
+        // Validate the request
+        $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'phone' => 'required|string|max:20',
             'email' => 'nullable|email',
+            'gender' => 'required|in:male,female',
+            'birth_date' => 'required|date',
             'analysisType' => 'required|exists:analyses,id',
-            'date' => 'required|date',
-            'time' => 'required'
+            'date' => 'nullable|date',
+            'time' => 'nullable'
         ]);
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
-       
+
 
         try {
-           
-           $patient = Patient::firstOrCreate([
-            'name' => $request->name,
-            'email' => $request->email,
-            'phone' => $request->phone,
-            'gender' => null,
-            'birth_date' => null
-           ]);
-           
+            // Create reservation request with patient info
+            $requestReservation = Request_reservation::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'phone' => $request->phone,
+                'gender' => $request->gender,
+                'birth_date' => $request->birth_date,
+                'analyse_id' => $request->analysisType,
+                'preferred_date' => $request->date,
+                'preferred_time' => $request->time,
+                'status' => 'pending'
+            ]);
 
-           $history = History::create([
-            'patient_id' => $patient->id,
-            'analyse_id' => $request->analysisType,
-            'analysis_date' => $request->date,
-            'time' => $request->time,
-            'status' => 'pending',
-            'result' => null
-           ]);
-           
-            
-            
+            // Get analysis name for success message
+            $analysis = Analyse::find($request->analysisType);
+            $analysisName = $analysis ? $analysis->name : 'التحليل';
 
-           // Get analysis name for success message
-           $analysis = Analyse::find($request->analysisType);
-           $analysisName = $analysis ? $analysis->name : 'التحليل';
-
-           return redirect()->back()->with('success', "تم حجز موعد {$analysisName} للسيد/ة {$request->name} بنجاح، سنتصل بك على الرقم {$request->phone} لتأكيد الحجز");
-
+            return redirect()->back()->with('success', "تم إرسال طلب الحجز {$analysisName} للسيد/ة {$request->name} بنجاح، سنتصل بك على الرقم {$request->phone} لتأكيد الحجز");
         } catch (\Exception $e) {
             Log::error('Booking error:', ['error' => $e->getMessage()]);
-            return redirect()->back()->with('error', 'حدث خطأ أثناء حفظ الحجز، يرجى المحاولة مرة أخرى');
+            return redirect()->back()->with('error', 'حدث خطأ أثناء إرسال طلب الحجز، يرجى المحاولة مرة أخرى');
         }
     }
 
@@ -91,27 +83,30 @@ class Labo_dzController extends Controller
             'email' => 'required|email',
             'message' => 'required|string'
         ]);
-    
-       
+
+
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
-    
+
         try {
-           
+
             Message::create([
                 'name' => $request->name,
                 'email' => $request->email,
                 'message' => $request->message,
             ]);
-    
+
             return redirect()->back()->with('success', 'تم إرسال رسالتك بنجاح وسنرد عليك في أقرب وقت');
-    
         } catch (\Exception $e) {
             Log::error('Message sending error:', ['error' => $e->getMessage()]);
             return redirect()->back()->with('error', 'حدث خطأ أثناء إرسال الرسالة، يرجى المحاولة مرة أخرى');
         }
     }
 
-
+    public function analysisInfo()
+    {
+        $analyses = Analyse::all();
+        return view('analysis-info', compact('analyses'));
+    }
 }

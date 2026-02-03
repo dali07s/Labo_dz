@@ -1,0 +1,12 @@
+.git
+.gitignore
+node_modules
+vendor
+storage
+.env
+docker-compose.override.yml
+*.md
+*.zip
+*.tar
+.DS_Store
+docker/php/php.ini

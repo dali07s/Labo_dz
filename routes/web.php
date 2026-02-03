@@ -24,6 +24,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [Labo_dzController::class, 'index'])->name('home');
 Route::post('/booking', [Labo_dzController::class, 'booking'])->name('booking');
 Route::post('/message', [Labo_dzController::class, 'message'])->name('message');
+Route::get('/analysis-info', [Labo_dzController::class, 'analysisInfo'])->name('analysis.info');
 
 // Authentication Routes
 Route::middleware('guest:administrator')->group(function () {
@@ -44,6 +45,11 @@ Route::middleware('auth:administrator')->group(function () {
         Route::get('/', [reservationsController::class, 'reservations'])->name('reservations');
         Route::get('/filter', [reservationsController::class, 'filterReservations'])->name('filter.reservations');
         Route::put('/{id}', [reservationsController::class, 'updateBookingStatus'])->name('admin.bookings.update');
+
+        // Reservation Requests
+        Route::get('/requests', [reservationsController::class, 'reservationRequests'])->name('reservation.requests');
+        Route::post('/requests/{id}/confirm', [reservationsController::class, 'confirmRequest'])->name('reservation.requests.confirm');
+        Route::post('/requests/{id}/reject', [reservationsController::class, 'rejectRequest'])->name('reservation.requests.reject');
     });
 
     // Analyses
@@ -65,7 +71,4 @@ Route::middleware('auth:administrator')->group(function () {
         Route::delete('/{id}', [messagesController::class, 'deleteMessage'])->name('messages.delete');
         Route::patch('/{id}/mark-as-read', [messagesController::class, 'markAsRead'])->name('messages.markAsRead');
     });
-
 });
-
-

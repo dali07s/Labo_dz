@@ -1,14 +1,16 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>مخبر المنيعة - Labo_dz</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-   <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
 </head>
 <script src="{{ asset('js/app.js') }}"></script>
+
 <body>
     <!-- Global Dynamic Background -->
     <div class="global-bg">
@@ -23,15 +25,15 @@
 
     <!-- Success/Error Messages -->
     @if(session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
-        </div>
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
     @endif
 
     @if(session('error'))
-        <div class="alert alert-error">
-            {{ session('error') }}
-        </div>
+    <div class="alert alert-error">
+        {{ session('error') }}
+    </div>
     @endif
 
     <!-- Navigation -->
@@ -48,7 +50,7 @@
 
     <!-- Hero Section -->
     <section id="home" class="hero">
-        <h1 >مرحباً بكم في مخبر المنيعة</h1>
+        <h1>مرحباً بكم في مخبر المنيعة</h1>
         <p>نقدم خدمات تحليلية دقيقة باستخدام أحدث التقنيات الطبية والكوادر المؤهلة</p>
         <a href="#booking" class="cta-button">احجز موعدك الآن <i class="fas fa-arrow-left"></i></a>
     </section>
@@ -80,54 +82,37 @@
                     <h3>دعم مستمر</h3>
                     <p>خدمة عملاء على مدار الساعة للرد على استفساراتكم وتقديم الدعم</p>
                 </div>
-                <div class="feature-card">
-                    <i class="fas fa-headset"></i>
-                    <h3>دعم مستمر</h3>
-                    <p>خدمة عملاء على مدار الساعة للرد على استفساراتكم وتقديم الدعم</p>
-                </div>
-                <div class="feature-card">
-                    <i class="fas fa-headset"></i>
-                    <h3>دعم مستمر</h3>
-                    <p>خدمة عملاء على مدار الساعة للرد على استفساراتكم وتقديم الدعم</p>
-                </div>
             </div>
         </div>
     </section>
 
 
-  <!-- Analysis Section -->
-<section id="analysis" class="section">
-    <div class="container">
-        <h2><i class="fas fa-flask"></i> قائمة التحاليل المتاحة</h2>
-        <p>نقدم مجموعة واسعة من التحاليل الطبية الدقيقة باستخدام أحدث التقنيات</p>
-        <div class="analysis-list">
-            @foreach($analyses as $analysis)
+    <!-- Analysis Section -->
+    <section id="analysis" class="section">
+        <div class="container">
+            <h2><i class="fas fa-flask"></i> قائمة التحاليل المتاحة</h2>
+            <p>نقدم مجموعة واسعة من التحاليل الطبية الدقيقة باستخدام أحدث التقنيات</p>
+            <div class="analysis-list">
+                @foreach($analyses as $analysis)
                 <div class="analysis-item">
                     <span>{{ $analysis->name }}</span>
                     @if($analysis->availability == 1)
-                        <button class='status-btn available'>متوفر</button>
+                    <button class='status-btn available'>متوفر</button>
                     @else
-                        <button class='status-btn unavailable'>غير متوفر</button>
+                    <button class='status-btn unavailable'>غير متوفر</button>
                     @endif
                 </div>
-            @endforeach
+                @endforeach
+            </div>
         </div>
-    </div>
-</section>
+    </section>
 
-    <!-- Tips Section -->
+    <!-- Analysis Info Button Section -->
     <section id="tips" class="section">
         <div class="container">
             <h2><i class="fas fa-lightbulb"></i> نصائح قبل إجراء التحاليل</h2>
-            <ul>
-                <li><b>تحليل السكر (Glycémie):</b> يجب الصوم لمدة 8 ساعات على الأقل قبل أخذ العينة.</li>
-                <li><b>تحليل الدهون (Lipid Profile):</b> الصيام من 9 إلى 12 ساعة مع تجنب الأطعمة الدسمة في اليوم السابق.</li>
-                <li><b>تحليل وظائف الكبد:</b> يُفضل الامتناع عن تناول الأدوية لمدة 48 ساعة إن أمكن.</li>
-                <li><b>تحليل الغدة الدرقية (TSH):</b> لا يتطلب صيامًا، لكن يُفضل أخذ العينة في الصباح.</li>
-                <li><b>تحليل الحديد (Fer sérique):</b> الصيام من 8 إلى 12 ساعة للحصول على نتيجة دقيقة.</li>
-                <li><b>تحليل البول (Urine):</b> استخدم عينة بول الصباح الأولى واحتفظ بها في عبوة نظيفة.</li>
-                <li><b>تحليل الحمل (β-HCG):</b> يُفضل أخذ العينة في الصباح أو بعد تأخر الدورة بيومين على الأقل.</li>
-            </ul>
+            <p>للحصول على جميع المعلومات حول التحاليل ونصائح الإعداد، يرجى الضغط على الزر أدناه</p>
+            <a href="{{ route('analysis.info') }}" class="cta-button">عرض معلومات التحاليل <i class="fas fa-arrow-left"></i></a>
         </div>
     </section>
 
@@ -151,14 +136,24 @@
                     <input type="email" id="email" name="email" placeholder="أدخل بريدك الإلكتروني">
                 </div>
                 <div class="form-group">
+                    <label for="gender">الجنس</label>
+                    <select id="gender" name="gender" required>
+                        <option value="">اختر الجنس</option>
+                        <option value="male">ذكر</option>
+                        <option value="female">أنثى</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="birth_date">تاريخ الميلاد</label>
+                    <input type="date" id="birth_date" name="birth_date" required>
+                </div>
+                <div class="form-group">
                     <label for="analysisType">نوع التحليل</label>
                     <select id="analysisType" name="analysisType" required>
-                       @php
-                           foreach ($analyses as $analyse) {
-                               echo "<option value='{$analyse->id}'>{$analyse->name}</option>";
-                           }
-                       @endphp
-
+                        <option value="">اختر نوع التحليل</option>
+                        @foreach($analyses as $analyse)
+                        <option value="{{ $analyse->id }}">{{ $analyse->name }}</option>
+                        @endforeach
                     </select>
                 </div>
                 <div class="form-group">
@@ -203,7 +198,8 @@
         <div class="container">
             <h2><i class="fas fa-map-marker-alt"></i> موقعنا</h2>
             <p>يمكنكم زيارة مخبرنا في العنوان التالي أو الاتصال بنا للحصول على التوجيهات</p>
-            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d5693.052425601013!2d5.262623025838582!3d31.957933404038677!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x125d69d1688915f9%3A0xc65def288f0e9a57!2sLaboratoire%20Bela%C3%AFd%20d&#39;analyse%20m%C3%A9dical!5e0!3m2!1sen!2sdz!4v1761573361428!5m2!1sen!2sdz" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>        </div>
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d5693.052425601013!2d5.262623025838582!3d31.957933404038677!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x125d69d1688915f9%3A0xc65def288f0e9a57!2sLaboratoire%20Bela%C3%AFd%20d&#39;analyse%20m%C3%A9dical!5e0!3m2!1sen!2sdz!4v1761573361428!5m2!1sen!2sdz" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
     </section>
 
     <!-- Footer -->
@@ -242,4 +238,5 @@
 
 
 </body>
+
 </html>

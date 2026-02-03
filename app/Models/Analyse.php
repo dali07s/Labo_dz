@@ -31,7 +31,8 @@ class Analyse extends Model
         'availability' => 'boolean',
     ];
 
-    public function histories(){
+    public function histories()
+    {
         return $this->hasMany(History::class);
     }
 }
