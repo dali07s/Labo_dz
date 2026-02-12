@@ -67,7 +67,15 @@
                             <td>{{ $requestItem->email ?? 'غير متوفر' }}</td>
                             <td>{{ $requestItem->gender == 'male' ? 'ذكر' : ($requestItem->gender == 'female' ? 'أنثى' : 'غير محدد') }}</td>
                             <td>{{ $requestItem->birth_date ? \Carbon\Carbon::parse($requestItem->birth_date)->format('Y-m-d') : 'غير محدد' }}</td>
-                            <td>{{ $requestItem->analyse->name ?? 'غير متوفر' }}</td>
+                            <td>
+                                @if($requestItem->analyses->count() > 0)
+                                    @foreach($requestItem->analyses as $analyse)
+                                        <span class="badge bg-info">{{ $analyse->name }}</span>
+                                    @endforeach
+                                @else
+                                    {{ $requestItem->analyse->name ?? 'غير متوفر' }}
+                                @endif
+                            </td>
                             <td>{{ $requestItem->preferred_date ? \Carbon\Carbon::parse($requestItem->preferred_date)->format('Y-m-d') : 'غير محدد' }}</td>
                             <td>{{ $requestItem->preferred_time ? substr($requestItem->preferred_time, 0, 5) : 'غير محدد' }}</td>
                             <td>
@@ -119,7 +127,16 @@
                                                 <label class="form-label">اسم المريض: {{ $requestItem->name }}</label>
                                             </div>
                                             <div class="mb-3">
-                                                <label class="form-label">نوع التحليل: {{ $requestItem->analyse->name ?? 'غير متوفر' }}</label>
+                                                <label class="form-label">التحاليل المطلوبة:</label>
+                                                @if($requestItem->analyses->count() > 0)
+                                                    <ul>
+                                                        @foreach($requestItem->analyses as $analyse)
+                                                            <li>{{ $analyse->name }}</li>
+                                                        @endforeach
+                                                    </ul>
+                                                @else
+                                                    <p>{{ $requestItem->analyse->name ?? 'غير متوفر' }}</p>
+                                                @endif
                                             </div>
                                             <div class="mb-3">
                                                 <label for="analysis_date{{ $requestItem->id }}" class="form-label">تاريخ التحليل *</label>

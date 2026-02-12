@@ -42,9 +42,9 @@
                         <h4>حالة التحليل:</h4>
                         <p>
                             @if($analyse->availability == 1)
-                                <span class="status-badge available-status">متوفر</span>
+                            <span class="status-badge available-status">متوفر</span>
                             @else
-                                <span class="status-badge unavailable-status">غير متوفر</span>
+                            <span class="status-badge unavailable-status">غير متوفر</span>
                             @endif
                         </p>
                         <h4>نصائح الإعداد:</h4>
@@ -52,6 +52,12 @@
 
                         <h4>ملاحظات إضافية:</h4>
                         <p>{{ $analyse->description ?? 'لا توجد معلومات إضافية' }}</p>
+
+                        <h4><i class="fas fa-clock"></i> المدة:</h4>
+                        <p>{{ $analyse->duration }}</p>
+
+                        <h4><i class="fas fa-money-bill-wave"></i> السعر:</h4>
+                        <p class="price">{{ number_format($analyse->price, 2) }} دج</p>
                     </div>
                 </div>
                 @empty

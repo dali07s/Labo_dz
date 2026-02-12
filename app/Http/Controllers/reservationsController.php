@@ -120,24 +120,28 @@ class reservationsController extends Controller
                 'birth_date' => $reservationRequest->birth_date
             ]);
 
-            // Create history record
-            $history = History::create([
-                'patient_id' => $patient->id,
-                'analyse_id' => $reservationRequest->analyse_id,
-                'analysis_date' => $request->analysis_date,
-                'time' => $request->time,
-                'status' => 'confirmed',
-                'result' => null
-            ]);
+            // Create separate history records for each analysis
+            $histories = [];
+            foreach ($reservationRequest->analyses as $analyse) {
+                $history = History::create([
+                    'patient_id' => $patient->id,
+                    'analyse_id' => $analyse->id,
+                    'analysis_date' => $request->analysis_date,
+                    'time' => $request->time,
+                    'status' => 'confirmed',
+                    'result' => null
+                ]);
+                $histories[] = $history;
 
-            // Create reminder for 24 hours before appointment
-            Reminder::create([
-                'history_id' => $history->id,
-                'patient_id' => $patient->id,
-                'analyse_id' => $reservationRequest->analyse_id,
-                'scheduled_for' => \Carbon\Carbon::parse($request->analysis_date)->subDay(), // 24 hours before
-                'is_sent' => false
-            ]);
+                // Create reminder for each analysis
+                Reminder::create([
+                    'history_id' => $history->id,
+                    'patient_id' => $patient->id,
+                    'analyse_id' => $analyse->id,
+                    'scheduled_for' => \Carbon\Carbon::parse($request->analysis_date)->subDay(), // 24 hours before
+                    'is_sent' => false
+                ]);
+            }
 
             // Update reservation request
             $reservationRequest->update([

@@ -35,4 +35,9 @@ class Analyse extends Model
     {
         return $this->hasMany(History::class);
     }
+
+    public function requestReservations()
+    {
+        return $this->belongsToMany(Request_reservation::class, 'request_reservation_analyses');
+    }
 }

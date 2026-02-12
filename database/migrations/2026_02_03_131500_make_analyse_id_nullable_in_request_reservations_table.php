@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('request_reservations', function (Blueprint $table) {
-            //
+            $table->unsignedBigInteger('analyse_id')->nullable()->change();
         });
     }
 
@@ -26,7 +26,7 @@ return new class extends Migration
     public function down()
     {
         Schema::table('request_reservations', function (Blueprint $table) {
-            //
+            $table->unsignedBigInteger('analyse_id')->nullable(false)->change();
         });
     }
 };

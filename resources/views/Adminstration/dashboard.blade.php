@@ -3,11 +3,11 @@
 @section('title', 'لوحة التحكم - نظرة عامة')
 
 @section('content')
-  <div class="section-header">
-      <h2><i class="fas fa-tachometer-alt"></i> نظرة عامة</h2>
-      <span>{{ \Carbon\Carbon::now()->locale('ar')->translatedFormat('l j F Y') }}</span>
+<div class="section-header">
+    <h2><i class="fas fa-tachometer-alt"></i> نظرة عامة</h2>
+    <span>{{ \Carbon\Carbon::now()->locale('ar')->translatedFormat('l j F Y') }}</span>
 </div>
-  
+
 <div class="stats-grid">
     <div class="stat-card">
         <i class="fas fa-calendar-check"></i>
@@ -30,14 +30,14 @@
         <span class="stat-label">إجمالي المرضى</span>
     </div>
 </div>
- 
+
 {{-- <div class="section-header">
     <h2><i class="fas fa-history"></i> أحدث الحجوزات</h2>
     <a href="{{ route('reservations') }}" class="btn btn-primary">
-        <i class="fas fa-list"></i> عرض الكل
-    </a>
+<i class="fas fa-list"></i> عرض الكل
+</a>
 </div>
- 
+
 <div class="table-container">
     <table class="data-table">
         <thead>
@@ -73,7 +73,3 @@
     </table>
 </div> --}}
 @endsection
-
-
-
-

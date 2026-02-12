@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,18 +11,21 @@
 
     @if(request()->routeIs('dashboard'))
     <link href="{{ asset('css/dashboard/dashboard.css') }}" rel="stylesheet">
-@elseif(request()->routeIs('analyses*'))
+    @elseif(request()->routeIs('analyses*'))
     <link href="{{ asset('css/dashboard/analyses.css') }}" rel="stylesheet">
-@elseif(request()->routeIs('reservations*'))
+    @elseif(request()->routeIs('reservation.requests*'))
+    <link href="{{ asset('css/dashboard/reservation-requests.css') }}" rel="stylesheet">
+    @elseif(request()->routeIs('reservations*'))
     <link href="{{ asset('css/dashboard/reservations.css') }}" rel="stylesheet">
-@elseif(request()->routeIs('messages*'))
+    @elseif(request()->routeIs('messages*'))
     <link href="{{ asset('css/dashboard/messages.css') }}" rel="stylesheet">
-@endif
+    @endif
 
-@yield('styles')
+    @yield('styles')
 
 
 </head>
+
 <body>
     @auth('administrator')
     <header class="admin-header">
@@ -43,17 +47,20 @@
         <nav class="admin-sidebar">
             <ul class="sidebar-menu">
                 <li><a href="{{ route('dashboard') }}" class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">
-                    <i class="fas fa-tachometer-alt"></i> لوحة التحكم
-                </a></li>
+                        <i class="fas fa-tachometer-alt"></i> لوحة التحكم
+                    </a></li>
+                <li><a href="{{ route('reservation.requests') }}" class="{{ request()->routeIs('reservation.requests*') ? 'active' : '' }}">
+                        <i class="fas fa-clock"></i> طلبات الحجز
+                    </a></li>
                 <li><a href="{{ route('reservations') }}" class="{{ request()->routeIs('reservations') ? 'active' : '' }}">
-                    <i class="fas fa-calendar-check"></i> إدارة الحجوزات
-                </a></li>
+                        <i class="fas fa-calendar-check"></i> إدارة الحجوزات
+                    </a></li>
                 <li><a href="{{ route('analyses') }}" class="{{ request()->routeIs('analyses') ? 'active' : '' }}">
-                    <i class="fas fa-flask"></i> إدارة التحاليل
-                </a></li>
+                        <i class="fas fa-flask"></i> إدارة التحاليل
+                    </a></li>
                 <li><a href="{{ route('messages') }}" class="{{ request()->routeIs('messages') ? 'active' : '' }}">
-                    <i class="fas fa-envelope"></i> إرسال الرسائل
-                </a></li>
+                        <i class="fas fa-envelope"></i> إرسال الرسائل
+                    </a></li>
             </ul>
         </nav>
 
@@ -64,7 +71,7 @@
     @else
     <div class="login-redirect">
         <p>يجب تسجيل الدخول أولاً</p>
-        <a href="/auth" class="btn btn-primary">تسجيل الدخول</a>  {{-- Fixed link --}}
+        <a href="/auth" class="btn btn-primary">تسجيل الدخول</a> {{-- Fixed link --}}
     </div>
     @endauth
 
@@ -86,15 +93,16 @@
 
     <!-- Page Specific JS -->
     @if(request()->routeIs('dashboard'))
-        <script src="{{ asset('js/dashboard/dashboard.js') }}" type="module"></script>
+    <script src="{{ asset('js/dashboard/dashboard.js') }}" type="module"></script>
     @elseif(request()->routeIs('analyses*'))
-        <script src="{{ asset('js/dashboard/analyses.js') }}" type="module"></script>
+    <script src="{{ asset('js/dashboard/analyses.js') }}" type="module"></script>
     @elseif(request()->routeIs('reservations*'))
-        <script src="{{ asset('js/dashboard/reservations.js') }}" type="module"></script>
+    <script src="{{ asset('js/dashboard/reservations.js') }}" type="module"></script>
     @elseif(request()->routeIs('messages*'))
-        <script src="{{ asset('js/dashboard/messages.js') }}" type="module"></script>
+    <script src="{{ asset('js/dashboard/messages.js') }}" type="module"></script>
     @endif
 
     @yield('scripts')
 </body>
+
 </html>

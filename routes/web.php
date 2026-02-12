@@ -25,6 +25,7 @@ Route::get('/', [Labo_dzController::class, 'index'])->name('home');
 Route::post('/booking', [Labo_dzController::class, 'booking'])->name('booking');
 Route::post('/message', [Labo_dzController::class, 'message'])->name('message');
 Route::get('/analysis-info', [Labo_dzController::class, 'analysisInfo'])->name('analysis.info');
+Route::get('/reservation/{id}/pdf', [\App\Http\Controllers\PdfController::class, 'generateReservationPdf'])->name('reservation.pdf');
 
 // Authentication Routes
 Route::middleware('guest:administrator')->group(function () {

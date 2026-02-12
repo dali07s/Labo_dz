@@ -36,6 +36,16 @@
     </div>
     @endif
 
+    @if($errors->any())
+    <div class="alert alert-error">
+        <ul>
+            @foreach($errors->all() as $error)
+            <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+    @endif
+
     <!-- Navigation -->
     <nav>
         <ul class="nav-links">
@@ -148,13 +158,15 @@
                     <input type="date" id="birth_date" name="birth_date" required>
                 </div>
                 <div class="form-group">
-                    <label for="analysisType">نوع التحليل</label>
-                    <select id="analysisType" name="analysisType" required>
-                        <option value="">اختر نوع التحليل</option>
-                        @foreach($analyses as $analyse)
-                        <option value="{{ $analyse->id }}">{{ $analyse->name }}</option>
+                    <label for="analysisTypes">أنواع التحاليل <span class="required">*</span></label>
+                    <select name="analysisTypes[]" id="analysisTypes" multiple required>
+                        @foreach ($analyses as $analysis)
+                        <option value="{{ $analysis->id }}">
+                            {{ $analysis->name }}
+                        </option>
                         @endforeach
                     </select>
+                    <small class="form-text text-muted">اضغط مع Ctrl (أو Cmd على Mac) لاختيار أكثر من تحليل</small>
                 </div>
                 <div class="form-group">
                     <label for="date">التاريخ</label>
@@ -236,6 +248,29 @@
         </div>
     </footer>
 
+    {{-- Auto-trigger PDF download after successful booking --}}
+    @if(session('download_pdf'))
+    <script>
+        // Automatically download PDF after page loads
+        window.addEventListener('load', function() {
+            var reservationId = {
+                {
+                    session('download_pdf')
+                }
+            };
+            var downloadUrl = '{{ url("/reservation") }}/' + reservationId + '/pdf';
+
+            // Create a hidden link and trigger click
+            var link = document.createElement('a');
+            link.href = downloadUrl;
+            link.download = 'reservation_confirmation.pdf';
+            link.style.display = 'none';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        });
+    </script>
+    @endif
 
 </body>
 

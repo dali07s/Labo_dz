@@ -15,7 +15,6 @@ class Request_reservation extends Model
         'phone',
         'gender',
         'birth_date',
-        'analyse_id',
         'preferred_date',
         'preferred_time',
         'status',
@@ -30,6 +29,12 @@ class Request_reservation extends Model
         'birth_date' => 'date'
     ];
 
+    public function analyses()
+    {
+        return $this->belongsToMany(Analyse::class, 'request_reservation_analyses');
+    }
+
+    // Keep the old method for backward compatibility
     public function analyse()
     {
         return $this->belongsTo(Analyse::class);

@@ -41,7 +41,8 @@ class Labo_dzController extends Controller
             'email' => 'nullable|email',
             'gender' => 'required|in:male,female',
             'birth_date' => 'required|date',
-            'analysisType' => 'required|exists:analyses,id',
+            'analysisTypes' => 'required|array|min:1',
+            'analysisTypes.*' => 'exists:analyses,id',
             'date' => 'nullable|date',
             'time' => 'nullable'
         ]);
@@ -58,17 +59,22 @@ class Labo_dzController extends Controller
                 'phone' => $request->phone,
                 'gender' => $request->gender,
                 'birth_date' => $request->birth_date,
-                'analyse_id' => $request->analysisType,
                 'preferred_date' => $request->date,
                 'preferred_time' => $request->time,
                 'status' => 'pending'
             ]);
 
-            // Get analysis name for success message
-            $analysis = Analyse::find($request->analysisType);
-            $analysisName = $analysis ? $analysis->name : 'التحليل';
+            // Attach multiple analyses
+            $requestReservation->analyses()->attach($request->analysisTypes);
 
-            return redirect()->back()->with('success', "تم إرسال طلب الحجز {$analysisName} للسيد/ة {$request->name} بنجاح، سنتصل بك على الرقم {$request->phone} لتأكيد الحجز");
+            // Get analysis names for success message
+            $analyses = Analyse::whereIn('id', $request->analysisTypes)->get();
+            $analysisNames = $analyses->pluck('name')->implode(', ');
+
+            // Redirect with success message and trigger PDF download
+            return redirect()->back()
+                ->with('success', "تم إرسال طلب الحجز للتحاليل التالية: {$analysisNames} للسيد/ة {$request->name} بنجاح، سنتصل بك على الرقم {$request->phone} لتأكيد الحجز")
+                ->with('download_pdf', $requestReservation->id);
         } catch (\Exception $e) {
             Log::error('Booking error:', ['error' => $e->getMessage()]);
             return redirect()->back()->with('error', 'حدث خطأ أثناء إرسال طلب الحجز، يرجى المحاولة مرة أخرى');
