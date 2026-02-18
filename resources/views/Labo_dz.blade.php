@@ -1,13 +1,38 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="{{ app()->getLocale() }}" dir="{{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }}">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>مخبر المنيعة - Labo_dz</title>
+    <title>{{ __('messages.admin_panel') }} - Labo_dz</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+    <style>
+        .btn-lang {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .btn-lang:hover {
+            background: white;
+            color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+        .lang-switcher-public {
+            pointer-events: auto;
+        }
+        /* Fix for direction-dependent icons */
+        [dir="ltr"] .fa-arrow-left { transform: rotate(180deg); }
+        [dir="rtl"] .fa-arrow-right { transform: rotate(180deg); }
+    </style>
 </head>
 <script src="{{ asset('js/app.js') }}"></script>
 
@@ -48,49 +73,56 @@
 
     <!-- Navigation -->
     <nav>
+        <div class="lang-switcher-public" style="position: absolute; left: 20px; top: 20px; z-index: 1000;">
+            @if(app()->getLocale() == 'ar')
+                <a href="{{ route('lang.switch', 'fr') }}" class="btn-lang">Français</a>
+            @else
+                <a href="{{ route('lang.switch', 'ar') }}" class="btn-lang">العربية</a>
+            @endif
+        </div>
         <ul class="nav-links">
-            <li><a href="#home"><i class="fas fa-home"></i> الرئيسية</a></li>
-            <li><a href="#features"><i class="fas fa-star"></i> المميزات</a></li>
-            <li><a href="#analysis"><i class="fas fa-flask"></i> التحاليل</a></li>
-            <li><a href="#tips"><i class="fas fa-lightbulb"></i> نصائح</a></li>
-            <li><a href="#booking"><i class="fas fa-calendar-check"></i> حجز موعد</a></li>
-            <li><a href="#contact"><i class="fas fa-envelope"></i> اتصل بنا</a></li>
+            <li><a href="#home"><i class="fas fa-home"></i> {{ __('messages.home') }}</a></li>
+            <li><a href="#features"><i class="fas fa-star"></i> {{ __('messages.features') }}</a></li>
+            <li><a href="#analysis"><i class="fas fa-flask"></i> {{ __('messages.analysis') }}</a></li>
+            <li><a href="#tips"><i class="fas fa-lightbulb"></i> {{ __('messages.tips') }}</a></li>
+            <li><a href="#booking"><i class="fas fa-calendar-check"></i> {{ __('messages.booking') }}</a></li>
+            <li><a href="#contact"><i class="fas fa-envelope"></i> {{ __('messages.contact') }}</a></li>
         </ul>
     </nav>
 
     <!-- Hero Section -->
     <section id="home" class="hero">
-        <h1>مرحباً بكم في مخبر المنيعة</h1>
-        <p>نقدم خدمات تحليلية دقيقة باستخدام أحدث التقنيات الطبية والكوادر المؤهلة</p>
-        <a href="#booking" class="cta-button">احجز موعدك الآن <i class="fas fa-arrow-left"></i></a>
+        <h1>{{ __('messages.hero_title') }}</h1>
+        <p>{{ __('messages.hero_subtitle') }}</p>
+        <a href="#booking" class="cta-button">{{ __('messages.book_now') }} <i class="fas fa-arrow-{{ app()->getLocale() == 'ar' ? 'left' : 'right' }}"></i></a>
     </section>
 
     <!-- Features Section -->
     <section id="features" class="section">
         <div class="container">
-            <h2><i class="fas fa-star"></i> مميزات مخبرنا</h2>
-            <p>يتميز مخبر المنيعة بتقديم خدمات عالية الجودة باستخدام أحدث التقنيات والتحليلات المتقدمة لضمان تشخيص دقيق وسريع.</p>
+            <h2><i class="fas fa-star"></i> {{ __('messages.our_features') }}</h2>
+            <p>{{ __('messages.features_desc') }}</p>
 
             <div class="features-grid">
                 <div class="feature-card">
                     <i class="fas fa-microscope"></i>
-                    <h3>أحدث الأجهزة</h3>
-                    <p>نستخدم أحدث الأجهزة الطبية والتقنيات المتطورة لضمان دقة النتائج</p>
+                    <h3>{{ __('messages.modern_equipment') }}</h3>
+                    <p>{{ __('messages.modern_equipment_desc') }}</p>
                 </div>
                 <div class="feature-card">
                     <i class="fas fa-user-md"></i>
-                    <h3>كفاءات طبية</h3>
-                    <p>فريق طبي مؤهل وذو خبرة عالية في مجال التحاليل الطبية</p>
+                    <h3>{{ __('messages.medical_expertise') }}</h3>
+                    <p>{{ __('messages.medical_expertise_desc') }}</p>
                 </div>
                 <div class="feature-card">
                     <i class="fas fa-bolt"></i>
-                    <h3>نتائج سريعة</h3>
-                    <p>تقديم النتائج في أسرع وقت ممكن مع الحفاظ على الدقة التامة</p>
+                    <h3>{{ __('messages.fast_results') }}</h3>
+                    <p>{{ __('messages.fast_results_desc') }}</p>
                 </div>
                 <div class="feature-card">
                     <i class="fas fa-headset"></i>
-                    <h3>دعم مستمر</h3>
-                    <p>خدمة عملاء على مدار الساعة للرد على استفساراتكم وتقديم الدعم</p>
+                    <h3>{{ __('messages.continuous_support') }}</h3>
+                    <p>{{ __('messages.continuous_support_desc') }}</p>
                 </div>
             </div>
         </div>
@@ -100,16 +132,16 @@
     <!-- Analysis Section -->
     <section id="analysis" class="section">
         <div class="container">
-            <h2><i class="fas fa-flask"></i> قائمة التحاليل المتاحة</h2>
-            <p>نقدم مجموعة واسعة من التحاليل الطبية الدقيقة باستخدام أحدث التقنيات</p>
+            <h2><i class="fas fa-flask"></i> {{ __('messages.available_analyses_list') }}</h2>
+            <p>{{ __('messages.available_analyses_desc') }}</p>
             <div class="analysis-list">
                 @foreach($analyses as $analysis)
                 <div class="analysis-item">
                     <span>{{ $analysis->name }}</span>
                     @if($analysis->availability == 1)
-                    <button class='status-btn available'>متوفر</button>
+                    <button class='status-btn available'>{{ __('messages.available') }}</button>
                     @else
-                    <button class='status-btn unavailable'>غير متوفر</button>
+                    <button class='status-btn unavailable'>{{ __('messages.unavailable') }}</button>
                     @endif
                 </div>
                 @endforeach
@@ -120,45 +152,45 @@
     <!-- Analysis Info Button Section -->
     <section id="tips" class="section">
         <div class="container">
-            <h2><i class="fas fa-lightbulb"></i> نصائح قبل إجراء التحاليل</h2>
-            <p>للحصول على جميع المعلومات حول التحاليل ونصائح الإعداد، يرجى الضغط على الزر أدناه</p>
-            <a href="{{ route('analysis.info') }}" class="cta-button">عرض معلومات التحاليل <i class="fas fa-arrow-left"></i></a>
+            <h2><i class="fas fa-lightbulb"></i> {{ __('messages.tips_title') }}</h2>
+            <p>{{ __('messages.tips_desc') }}</p>
+            <a href="{{ route('analysis.info') }}" class="cta-button">{{ __('messages.view_analysis_info') }} <i class="fas fa-arrow-{{ app()->getLocale() == 'ar' ? 'left' : 'right' }}"></i></a>
         </div>
     </section>
 
     <!-- Booking Section -->
     <section id="booking" class="section">
         <div class="container">
-            <h2><i class="fas fa-calendar-check"></i> حجز موعد</h2>
-            <p>يرجى ملء النموذج التالي لحجز موعد في مخبرنا وسنتصل بك لتأكيد الحجز</p>
+            <h2><i class="fas fa-calendar-check"></i> {{ __('messages.booking') }}</h2>
+            <p>{{ __('messages.booking_desc') }}</p>
             <form id="bookingForm" action="{{ route('booking') }}" method="POST">
                 @csrf
                 <div class="form-group">
-                    <label for="name">الاسم الكامل</label>
-                    <input type="text" id="name" name="name" placeholder="أدخل اسمك الكامل" required>
+                    <label for="name">{{ __('messages.full_name') }}</label>
+                    <input type="text" id="name" name="name" placeholder="{{ __('messages.full_name') }}" required>
                 </div>
                 <div class="form-group">
-                    <label for="phone">رقم الهاتف</label>
-                    <input type="tel" id="phone" name="phone" placeholder="أدخل رقم هاتفك" required>
+                    <label for="phone">{{ __('messages.phone_number') }}</label>
+                    <input type="tel" id="phone" name="phone" placeholder="{{ __('messages.phone_number') }}" required>
                 </div>
                 <div class="form-group">
-                    <label for="email">البريد الإلكتروني</label>
-                    <input type="email" id="email" name="email" placeholder="أدخل بريدك الإلكتروني">
+                    <label for="email">{{ __('messages.email') }}</label>
+                    <input type="email" id="email" name="email" placeholder="{{ __('messages.email') }}">
                 </div>
                 <div class="form-group">
-                    <label for="gender">الجنس</label>
+                    <label for="gender">{{ __('messages.gender') }}</label>
                     <select id="gender" name="gender" required>
-                        <option value="">اختر الجنس</option>
-                        <option value="male">ذكر</option>
-                        <option value="female">أنثى</option>
+                        <option value="">{{ __('messages.select_gender') }}</option>
+                        <option value="male">{{ __('messages.male') }}</option>
+                        <option value="female">{{ __('messages.female') }}</option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="birth_date">تاريخ الميلاد</label>
+                    <label for="birth_date">{{ __('messages.birth_date') }}</label>
                     <input type="date" id="birth_date" name="birth_date" required>
                 </div>
                 <div class="form-group">
-                    <label>أنواع التحاليل <span class="required">*</span></label>
+                    <label>{{ __('messages.analysis_types') }} <span class="required">*</span></label>
 
                     <div class="checkbox-grid">
                       @foreach ($analyses as $analysis)
@@ -173,14 +205,14 @@
                             <small class="form-text text-muted">يمكنك اختيار تحليل واحد أو أكثر من القائمة أعلاه</small>
                 </div>
                 <div class="form-group">
-                    <label for="date">التاريخ</label>
+                    <label for="date">{{ __('messages.date') }}</label>
                     <input type="date" id="date" name="date" required>
                 </div>
                 <div class="form-group">
-                    <label for="time">الوقت</label>
+                    <label for="time">{{ __('messages.time') }}</label>
                     <input type="time" id="time" name="time" required>
                 </div>
-                <button type="submit"><i class="fas fa-paper-plane"></i> تأكيد الحجز</button>
+                <button type="submit"><i class="fas fa-paper-plane"></i> {{ __('messages.confirm_booking') }}</button>
             </form>
         </div>
     </section>
@@ -188,23 +220,23 @@
     <!-- Contact Section -->
     <section id="contact" class="section">
         <div class="container">
-            <h2><i class="fas fa-envelope"></i> اتصل بنا</h2>
-            <p>للاستفسارات أو الشكاوى، يرجى تعبئة النموذج التالي وسنرد عليكم في أقرب وقت</p>
+            <h2><i class="fas fa-envelope"></i> {{ __('messages.contact') }}</h2>
+            <p>{{ __('messages.contact_desc') }}</p>
             <form id="contactForm" action={{route('message')}} method="POST">
                 @csrf
                 <div class="form-group">
-                    <label for="contact_name">الاسم</label>
-                    <input type="text" name="name" id="contact_name" placeholder="أدخل اسمك" required>
+                    <label for="contact_name">{{ __('messages.name') }}</label>
+                    <input type="text" name="name" id="contact_name" placeholder="{{ __('messages.name') }}" required>
                 </div>
                 <div class="form-group">
-                    <label for="contact_email">البريد الإلكتروني</label>
-                    <input type="email" id="contact_email" name="email" placeholder="أدخل بريدك الإلكتروني" required>
+                    <label for="contact_email">{{ __('messages.email') }}</label>
+                    <input type="email" id="contact_email" name="email" placeholder="{{ __('messages.email') }}" required>
                 </div>
                 <div class="form-group">
-                    <label for="message">الرسالة</label>
-                    <textarea id="message" name="message" rows="5" placeholder="اكتب رسالتك هنا..." required></textarea>
+                    <label for="message">{{ __('messages.message') }}</label>
+                    <textarea id="message" name="message" rows="5" placeholder="{{ __('messages.message') }}" required></textarea>
                 </div>
-                <button type="submit"><i class="fas fa-paper-plane"></i> إرسال الرسالة</button>
+                <button type="submit"><i class="fas fa-paper-plane"></i> {{ __('messages.send_message') }}</button>
             </form>
         </div>
     </section>
@@ -212,8 +244,8 @@
     <!-- Map Section -->
     <section class="section">
         <div class="container">
-            <h2><i class="fas fa-map-marker-alt"></i> موقعنا</h2>
-            <p>يمكنكم زيارة مخبرنا في العنوان التالي أو الاتصال بنا للحصول على التوجيهات</p>
+            <h2><i class="fas fa-map-marker-alt"></i> {{ __('messages.our_location') }}</h2>
+            <p>{{ __('messages.location_desc') }}</p>
             <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d5693.052425601013!2d5.262623025838582!3d31.957933404038677!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x125d69d1688915f9%3A0xc65def288f0e9a57!2sLaboratoire%20Bela%C3%AFd%20d&#39;analyse%20m%C3%A9dical!5e0!3m2!1sen!2sdz!4v1761573361428!5m2!1sen!2sdz" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
         </div>
     </section>
@@ -222,8 +254,8 @@
     <footer>
         <div class="footer-content">
             <div class="footer-section">
-                <h3>مخبر المنيعة</h3>
-                <p>نقدم خدمات تحليلية دقيقة باستخدام أحدث التقنيات الطبية والكوادر المؤهلة لتقديم أفضل خدمة للمرضى.</p>
+                <h3>{{ __('messages.admin_panel') }}</h3>
+                <p>{{ __('messages.footer_about') }}</p>
                 <div class="social-icons">
                     <a href="#"><i class="fab fa-facebook-f"></i></a>
                     <a href="#"><i class="fab fa-twitter"></i></a>
@@ -232,23 +264,23 @@
                 </div>
             </div>
             <div class="footer-section">
-                <h3>روابط سريعة</h3>
-                <a href="#home">الرئيسية</a>
-                <a href="#features">المميزات</a>
-                <a href="#analysis">التحاليل</a>
-                <a href="#booking">حجز موعد</a>
-                <a href="#contact">اتصل بنا</a>
+                <h3>{{ __('messages.quick_links') }}</h3>
+                <a href="#home">{{ __('messages.home') }}</a>
+                <a href="#features">{{ __('messages.features') }}</a>
+                <a href="#analysis">{{ __('messages.analysis') }}</a>
+                <a href="#booking">{{ __('messages.booking') }}</a>
+                <a href="#contact">{{ __('messages.contact') }}</a>
             </div>
             <div class="footer-section">
-                <h3>معلومات الاتصال</h3>
-                <p><i class="fas fa-map-marker-alt"></i> العنوان: شارع الاستقلال، المنيعة</p>
-                <p><i class="fas fa-phone"></i> الهاتف: 0550123456</p>
-                <p><i class="fas fa-envelope"></i> البريد: info@labo-dz.com</p>
-                <p><i class="fas fa-clock"></i> أوقات العمل: 8:00 - 18:00</p>
+                <h3>{{ __('messages.contact_info') }}</h3>
+                <p><i class="fas fa-map-marker-alt"></i> {{ __('messages.address') }}</p>
+                <p><i class="fas fa-phone"></i> {{ __('messages.phone_val') }}</p>
+                <p><i class="fas fa-envelope"></i> {{ __('messages.email_val') }}</p>
+                <p><i class="fas fa-clock"></i> {{ __('messages.work_hours') }}</p>
             </div>
         </div>
         <div class="copyright">
-            <p>جميع الحقوق محفوظة &copy; 2023 مخبر المنيعة - Labo_dz</p>
+            <p>{!! __('messages.all_rights_reserved') !!}</p>
         </div>
     </footer>
 
@@ -276,7 +308,7 @@
                     const checkboxes = this.querySelectorAll('input[name="analysisTypes[]"]:checked');
                     if (checkboxes.length === 0) {
                         e.preventDefault();
-                        alert('يرجى اختيار تحليل واحد على الأقل');
+                        alert('{{ __('messages.at_least_one_analysis') }}');
                     }
                 });
             }

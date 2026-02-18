@@ -1,12 +1,12 @@
 @extends('Adminstration.layout')
 
-@section('title', 'إضافة تحليل جديد')
+@section('title', __('messages.add_new_analysis'))
 
 @section('content')
 <div class="section-header">
-    <h2><i class="fas fa-plus-circle"></i> إضافة تحليل جديد</h2>
+    <h2><i class="fas fa-plus-circle"></i> {{ __('messages.add_new_analysis') }}</h2>
     <a href="{{ route('analyses') }}" class="btn btn-secondary">
-        <i class="fas fa-arrow-right"></i> رجوع
+        <i class="fas fa-arrow-right"></i> {{ __('messages.back') }}
     </a>
 </div>
 
@@ -16,7 +16,7 @@
 
         <div class="form-row">
             <div class="form-group">
-                <label>اسم التحليل *</label>
+                <label>{{ __('messages.analysis_name') }} *</label>
                 <input type="text" name="name" class="form-control" value="{{ old('name') }}" required>
                 @error('name')
                     <small class="text-danger">{{ $message }}</small>
@@ -24,7 +24,7 @@
             </div>
 
             <div class="form-group">
-                <label>السعر (دج) *</label>
+                <label>{{ __('messages.price') }} ({{ __('messages.price_unit') ?? 'دج' }}) *</label>
                 <input type="number" name="price" class="form-control" value="{{ old('price') }}" min="0" step="0.01" required>
                 @error('price')
                     <small class="text-danger">{{ $message }}</small>
@@ -33,7 +33,7 @@
         </div>
 
         <div class="form-group">
-            <label>الوصف *</label>
+            <label>{{ __('messages.description') }} *</label>
             <textarea name="description" class="form-control" rows="3" required>{{ old('description') }}</textarea>
             @error('description')
                 <small class="text-danger">{{ $message }}</small>
@@ -41,7 +41,7 @@
         </div>
 
         <div class="form-group">
-            <label>المعدل الطبيعي</label>
+            <label>{{ __('messages.normal_range') }}</label>
             <input type="text" name="normal_range" class="form-control" value="{{ old('normal_range') }}">
             @error('normal_range')
                 <small class="text-danger">{{ $message }}</small>
@@ -50,16 +50,16 @@
 
         <div class="form-row">
             <div class="form-group">
-                <label>مدة الانتظار *</label>
-                <input type="text" name="duration" class="form-control" value="{{ old('duration') }}" placeholder="مثال: 2 أيام، 3 ساعات، 30 دقيقة" required>
-                <small class="form-text text-muted">أدخل المدة بالشكل الحر (أيام، ساعات، دقائق)</small>
+                <label>{{ __('messages.duration') }} *</label>
+                <input type="text" name="duration" class="form-control" value="{{ old('duration') }}" placeholder="{{ __('messages.duration_placeholder') }}" required>
+                <small class="form-text text-muted">{{ __('messages.duration_help') }}</small>
                 @error('duration')
                     <small class="text-danger">{{ $message }}</small>
                 @enderror
             </div>
 
             <div class="form-group">
-                <label>صورة التحليل</label>
+                <label>{{ __('messages.analysis_image') }}</label>
                 <input type="file" name="image" class="form-control" accept="image/*">
                 @error('image')
                     <small class="text-danger">{{ $message }}</small>
@@ -68,7 +68,7 @@
         </div>
 
         <div class="form-group">
-            <label>تعليمات التحضير</label>
+            <label>{{ __('messages.preparation_instructions') }}</label>
             <textarea name="preparation_instructions" class="form-control" rows="3">{{ old('preparation_instructions') }}</textarea>
             @error('preparation_instructions')
                 <small class="text-danger">{{ $message }}</small>
@@ -77,9 +77,9 @@
 
         <div class="form-actions">
             <button type="submit" class="btn btn-primary">
-                <i class="fas fa-save"></i> حفظ التحليل
+                <i class="fas fa-save"></i> {{ __('messages.save_analysis') }}
             </button>
-            <a href="{{ route('analyses') }}" class="btn btn-secondary">إلغاء</a>
+            <a href="{{ route('analyses') }}" class="btn btn-secondary">{{ __('messages.cancel') }}</a>
         </div>
     </form>
 </div>

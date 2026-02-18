@@ -1,11 +1,11 @@
 @extends('Adminstration.layout')
 
-@section('title', 'تقييم الأهلية الطبية')
+@section('title', __('messages.eligibility_check'))
 
 @section('content')
 <div class="section-header">
-    <h2><i class="fas fa-stethoscope"></i> تقييم الأهلية الطبية الموحد</h2>
-    <p>المريض: <strong>{{ $patient->name }}</strong> | حجز موعد: <strong>{{ $reservation->analysis_date }} {{ $reservation->time }}</strong></p>
+    <h2><i class="fas fa-stethoscope"></i> {{ __('messages.medical_eligibility_assessment') }}</h2>
+    <p>{{ __('messages.patient') }}: <strong>{{ $patient->name }}</strong> | {{ __('messages.appointment') }}: <strong>{{ $reservation->analysis_date }} {{ $reservation->time }}</strong></p>
 </div>
 
 <div class="card shadow-sm border-0">
@@ -102,11 +102,11 @@
 
                 <div class="d-flex justify-content-between align-items-center mt-4 pt-2">
                     <a href="{{ route('reservations') }}" class="btn btn-outline-secondary px-4">
-                        <i class="fas fa-arrow-right me-2"></i> إلغاء العودة
+                        <i class="fas fa-arrow-right me-2"></i> {{ __('messages.cancel_return') }}
                     </a>
                     <div class="d-flex align-items-center gap-3">
                         <button type="submit" id="submit-check" class="btn btn-primary btn-lg px-5 shadow">
-                            <i class="fas fa-check-circle me-2"></i> تأكيد التقييم لجميع التحاليل
+                            <i class="fas fa-check-circle me-2"></i> {{ __('messages.confirm_assessment_all') }}
                         </button>
                         <div id="loading-spinner" class="d-none">
                             <div class="spinner-border text-primary" role="status">
@@ -120,22 +120,22 @@
             <!-- Results Container -->
             <div id="results-container" class="mt-5 d-none">
                 <hr class="my-5">
-                <h3 class="mb-4 text-center"><i class="fas fa-poll-h me-2"></i> نتائج التقييم النهائي</h3>
+                <h3 class="mb-4 text-center"><i class="fas fa-poll-h me-2"></i> {{ __('messages.final_assessment_results') }}</h3>
                 <div id="results-list" class="row g-4">
                     <!-- Results will be injected here -->
                 </div>
                 <div class="text-center mt-5">
                     <a href="{{ route('reservations') }}" class="btn btn-success btn-lg px-5">
-                        <i class="fas fa-tasks me-2"></i> العودة لإدارة الحجوزات
+                        <i class="fas fa-tasks me-2"></i> {{ __('messages.return_to_manage') }}
                     </a>
                 </div>
             </div>
         @else
             <div class="no-questions text-center py-5">
                 <i class="fas fa-info-circle fa-4x text-muted mb-3"></i>
-                <h4 class="text-secondary">لا توجد أسئلة بروتوكولية للتحاليل في هذا الحجز</h4>
-                <p class="text-muted">هذه التحاليل لا تتطلب فحص أهلية خاص. يمكنك العودة لإدارة الحجوزات.</p>
-                <a href="{{ route('reservations') }}" class="btn btn-primary mt-3 px-4">العودة للحجوزات</a>
+                <h4 class="text-secondary">{{ __('messages.no_questions_for_analyses') }}</h4>
+                <p class="text-muted">{{ __('messages.no_questions_desc') }}</p>
+                <a href="{{ route('reservations') }}" class="btn btn-primary mt-3 px-4">{{ __('messages.return_to_manage') }}</a>
             </div>
         @endif
     </div>

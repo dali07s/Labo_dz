@@ -1,45 +1,45 @@
 @extends('Adminstration.layout')
 
-@section('title', 'إدارة الحجوزات')
+@section('title', __('messages.manage_reservations'))
 
 @section('content')
 <div class="section-header d-flex justify-content-between align-items-center">
-    <h2><i class="fas fa-calendar-check"></i> إدارة الحجوزات</h2>
+    <h2><i class="fas fa-calendar-check"></i> {{ __('messages.manage_reservations') }}</h2>
     <div id="toast-container" class="toast-container position-fixed top-0 start-50 translate-middle-x p-3" style="z-index: 9999;"></div>
 </div>
 
 <!-- Filters -->
 <div class="filters-container">
-    <h3><i class="fas fa-filter"></i> تصفية الحجوزات</h3>
+    <h3><i class="fas fa-filter"></i> {{ __('messages.filter_reservations') }}</h3>
     <form method="GET" action="{{ route('filter.reservations') }}">
         <div class="filter-row">
             <div class="form-group">
-                <label>من تاريخ</label>
+                <label>{{ __('messages.start_date') }}</label>
                 <input type="date" name="start_date" value="{{ request('start_date') }}" class="form-control">
             </div>
             <div class="form-group">
-                <label>إلى تاريخ</label>
+                <label>{{ __('messages.end_date') }}</label>
                 <input type="date" name="end_date" value="{{ request('end_date') }}" class="form-control">
             </div>
             <div class="form-group">
-                <label>حالة الحجز</label>
+                <label>{{ __('messages.status') }}</label>
                 <select name="status" class="form-control">
-                    <option value="">جميع الحالات</option>
-                    <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>قيد الانتظار</option>
-                    <option value="confirmed" {{ request('status') == 'confirmed' ? 'selected' : '' }}>مؤكد</option>
-                    <option value="completed" {{ request('status') == 'completed' ? 'selected' : '' }}>منتهي</option>
+                    <option value="">{{ __('messages.all_statuses') }}</option>
+                    <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>{{ __('messages.pending') }}</option>
+                    <option value="confirmed" {{ request('status') == 'confirmed' ? 'selected' : '' }}>{{ __('messages.confirmed') }}</option>
+                    <option value="completed" {{ request('status') == 'completed' ? 'selected' : '' }}>{{ __('messages.completed') }}</option>
                 </select>
             </div>
             <div class="form-group">
-                <label>بحث</label>
-                <input type="text" name="search" value="{{ request('search') }}" class="form-control" placeholder="بحث بالاسم أو الهاتف">
+                <label>{{ __('messages.search') }}</label>
+                <input type="text" name="search" value="{{ request('search') }}" class="form-control" placeholder="{{ __('messages.search') }}">
             </div>
         </div>
         <button type="submit" class="btn btn-primary">
-            <i class="fas fa-search"></i> تطبيق التصفية
+            <i class="fas fa-search"></i> {{ __('messages.apply_filter') }}
         </button>
         <a href="{{ route('reservations') }}" class="btn btn-secondary">
-            <i class="fas fa-times"></i> إلغاء
+            <i class="fas fa-times"></i> {{ __('messages.cancel') }}
         </a>
     </form>
 </div>
@@ -49,20 +49,20 @@
     <div class="table-responsive" style="overflow-x: auto; -webkit-overflow-scrolling: touch;">
     @if($bookings->count() > 0)
         <div class="table-info mx-0 mt-3 px-3">
-            <p class="mb-0">عرض {{ $bookings->count() }} من أصل {{ $bookings->total() }} حجز</p>
+            <p class="mb-0">{{ __('messages.showing_results', ['count' => $bookings->count(), 'total' => $bookings->total()]) }}</p>
         </div>
         
         <table class="data-table mb-0">
             <thead>
                 <tr>
                     <th>#</th>
-                    <th>العميل</th>
-                    <th>الهاتف</th>
-                    <th>التحاليل</th>
-                    <th>التاريخ</th>
-                    <th>الوقت</th>
-                    <th>حالة الموعد</th>
-                    <th>الإجراءات</th>
+                    <th>{{ __('messages.customer') }}</th>
+                    <th>{{ __('messages.phone') }}</th>
+                    <th>{{ __('messages.analyses') }}</th>
+                    <th>{{ __('messages.date') }}</th>
+                    <th>{{ __('messages.time') }}</th>
+                    <th>{{ __('messages.status') }}</th>
+                    <th>{{ __('messages.actions') }}</th>
                 </tr>
             </thead>
             <tbody>
@@ -83,12 +83,12 @@
                                                 {{ $resAnalysis->analyse->name }}
                                             </span>
                                             <select name="status" class="mini-status-select status-{{ $resAnalysis->status }}">
-                                                <option value="booked" {{ $resAnalysis->status == 'booked' ? 'selected' : '' }}>محجوز</option>
-                                                <option value="ready" {{ $resAnalysis->status == 'ready' ? 'selected' : '' }}>جاهز</option>
-                                                <option value="blocked" {{ $resAnalysis->status == 'blocked' ? 'selected' : '' }}>محظور</option>
-                                                <option value="warning" {{ $resAnalysis->status == 'warning' ? 'selected' : '' }}>تنبيه</option>
-                                                <option value="pending_approval" {{ $resAnalysis->status == 'pending_approval' ? 'selected' : '' }}>بانتظار</option>
-                                                <option value="completed" {{ $resAnalysis->status == 'completed' ? 'selected' : '' }}>منتهي</option>
+                                                <option value="booked" {{ $resAnalysis->status == 'booked' ? 'selected' : '' }}>{{ __('messages.booked') }}</option>
+                                                <option value="ready" {{ $resAnalysis->status == 'ready' ? 'selected' : '' }}>{{ __('messages.ready') }}</option>
+                                                <option value="blocked" {{ $resAnalysis->status == 'blocked' ? 'selected' : '' }}>{{ __('messages.blocked') }}</option>
+                                                <option value="warning" {{ $resAnalysis->status == 'warning' ? 'selected' : '' }}>{{ __('messages.warning') }}</option>
+                                                <option value="pending_approval" {{ $resAnalysis->status == 'pending_approval' ? 'selected' : '' }}>{{ __('messages.pending_approval') }}</option>
+                                                <option value="completed" {{ $resAnalysis->status == 'completed' ? 'selected' : '' }}>{{ __('messages.completed') }}</option>
                                             </select>
                                         </div>
                                     </form>
@@ -100,12 +100,12 @@
                     <td>{{ $reservation->time }}</td>
                     <td>
                         <span class="status-badge status-{{ $reservation->status }}">
-                            @if($reservation->status == 'booked') محجوز
-                            @elseif($reservation->status == 'ready') جاهز
-                            @elseif($reservation->status == 'blocked') محظور
-                            @elseif($reservation->status == 'warning') تنبيه
-                            @elseif($reservation->status == 'pending_approval') بانتظار الموافقة
-                            @elseif($reservation->status == 'completed') منتهي
+                            @if($reservation->status == 'booked') {{ __('messages.booked') }}
+                            @elseif($reservation->status == 'ready') {{ __('messages.ready') }}
+                            @elseif($reservation->status == 'blocked') {{ __('messages.blocked') }}
+                            @elseif($reservation->status == 'warning') {{ __('messages.warning') }}
+                            @elseif($reservation->status == 'pending_approval') {{ __('messages.pending_approval') }}
+                            @elseif($reservation->status == 'completed') {{ __('messages.completed') }}
                             @else {{ $reservation->status }} @endif
                         </span>
                     </td>
@@ -115,16 +115,16 @@
                                 @csrf
                                 @method('PUT')
                                 <select name="status" class="status-select status-{{ $reservation->status }}">
-                                    <option value="booked" {{ $reservation->status == 'booked' ? 'selected' : '' }}>محجوز</option>
-                                    <option value="ready" {{ $reservation->status == 'ready' ? 'selected' : '' }}>جاهز</option>
-                                    <option value="blocked" {{ $reservation->status == 'blocked' ? 'selected' : '' }}>محظور</option>
-                                    <option value="warning" {{ $reservation->status == 'warning' ? 'selected' : '' }}>تنبيه</option>
-                                    <option value="pending_approval" {{ $reservation->status == 'pending_approval' ? 'selected' : '' }}>بانتظار الموافقة</option>
-                                    <option value="completed" {{ $reservation->status == 'completed' ? 'selected' : '' }}>منتهي</option>
+                                    <option value="booked" {{ $reservation->status == 'booked' ? 'selected' : '' }}>{{ __('messages.booked') }}</option>
+                                    <option value="ready" {{ $reservation->status == 'ready' ? 'selected' : '' }}>{{ __('messages.ready') }}</option>
+                                    <option value="blocked" {{ $reservation->status == 'blocked' ? 'selected' : '' }}>{{ __('messages.blocked') }}</option>
+                                    <option value="warning" {{ $reservation->status == 'warning' ? 'selected' : '' }}>{{ __('messages.warning') }}</option>
+                                    <option value="pending_approval" {{ $reservation->status == 'pending_approval' ? 'selected' : '' }}>{{ __('messages.pending_approval') }}</option>
+                                    <option value="completed" {{ $reservation->status == 'completed' ? 'selected' : '' }}>{{ __('messages.completed') }}</option>
                                 </select>
                             </form>
                             <a href="{{ route('admin.bookings.full-eligibility.form', $reservation->id) }}" class="btn btn-sm btn-outline-primary" title="فحص أهلية جميع التحاليل">
-                                <i class="fas fa-stethoscope"></i> فحص الأهلية
+                                <i class="fas fa-stethoscope"></i> {{ __('messages.eligibility_check') }}
                             </a>
                             
                             @php
@@ -137,7 +137,7 @@
                             @if($diagIsChecked)
                                 <a href="{{ route('admin.bookings.eligibility.results', $reservation->id) }}" class="btn btn-sm btn-outline-primary" title="عرض تفاصيل التقييم والإجابات">
                                     <i class="fas {{ $diagHasBlocked ? 'fa-times-circle' : ($diagHasWarning ? 'fa-exclamation-triangle' : 'fa-check-circle') }}"></i>
-                                    نتائج الأهلية
+                                    {{ __('messages.eligibility_results') }}
                                 </a>
                             @endif
                         </div>
@@ -155,8 +155,8 @@
     @else
         <div class="no-data">
             <i class="fas fa-calendar-times"></i>
-            <p>لا توجد حجوزات تطابق معايير البحث</p>
-            <a href="{{ route('reservations') }}" class="btn btn-primary">عرض جميع الحجوزات</a>
+            <p>{{ __('messages.no_reservations_found') }}</p>
+            <a href="{{ route('reservations') }}" class="btn btn-primary">{{ __('messages.view_all_reservations') }}</a>
         </div>
     @endif
 </div>

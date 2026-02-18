@@ -1,10 +1,10 @@
 @extends('Adminstration.layout')
 
-@section('title', 'إرسال الرسائل')
+@section('title', __('messages.send_messages'))
 
 @section('content')
 <div class="section-header">
-    <h2><i class="fas fa-envelope"></i> إرسال الرسائل والنتائج</h2>
+    <h2><i class="fas fa-envelope"></i> {{ __('messages.messages_and_results') }}</h2>
 </div>
 
 <div class="messages-container">
@@ -16,7 +16,7 @@
             </div>
             <div class="messages-stat-info">
                 <h3>{{ App\Models\Message::count() }}</h3>
-                <p>إجمالي الرسائل</p>
+                <p>{{ __('messages.total_messages') ?? 'إجمالي الرسائل' }}</p>
             </div>
         </div>
         <div class="messages-stat-card">
@@ -25,7 +25,7 @@
             </div>
             <div class="messages-stat-info">
                 <h3>{{ App\Models\Message::where('is_read', false)->count() }}</h3>
-                <p>الرسائل غير المقروءة</p>
+                <p>{{ __('messages.unread_messages') }}</p>
             </div>
         </div>
         <div class="messages-stat-card">
@@ -34,7 +34,7 @@
             </div>
             <div class="messages-stat-info">
                 <h3>{{ App\Models\Patient::count() }}</h3>
-                <p>إجمالي المرضى</p>
+                <p>{{ __('messages.total_patients') }}</p>
             </div>
         </div>
     </div>
@@ -42,7 +42,7 @@
     <div class="messages-layout">
         <!-- Recent Messages Section -->
         <div class="messages-section">
-            <h3><i class="fas fa-inbox"></i> الرسائل الواردة</h3>
+            <h3><i class="fas fa-inbox"></i> {{ __('messages.inbox') }}</h3>
             
             @if($messages->count() > 0)
                 <div class="messages-list">
@@ -59,7 +59,7 @@
                                 <form action="{{ route('messages.delete', $message->id) }}" method="POST" class="d-inline">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn-delete" onclick="return confirm('هل أنت متأكد من حذف هذه الرسالة؟')">
+                                    <button type="submit" class="btn-delete" onclick="return confirm('{{ __('messages.delete_message_confirm') }}')">
                                         <i class="fas fa-trash"></i>
                                     </button>
                                 </form>
@@ -67,7 +67,7 @@
                                     <form action="{{ route('messages.markAsRead', $message->id) }}" method="POST" style="display:inline;">
                                         @csrf
                                         @method('PATCH')
-                                        <button type="submit" class="btn btn-success btn-sm" title="تعيين كمقروء">
+                                        <button type="submit" class="btn btn-success btn-sm" title="{{ __('messages.mark_as_read') }}">
                                             <i class="fas fa-check"></i>
                                         </button>
                                     </form>
@@ -78,7 +78,7 @@
                             <p>{{ Str::limit($message->message, 150) }}</p>
                         </div>
                         @if(!$message->is_read)
-                            <div class="unread-badge">جديد</div>
+                            <div class="unread-badge">{{ __('messages.new') }}</div>
                         @endif
                     </div>
                     @endforeach
@@ -90,7 +90,7 @@
             @else
                 <div class="no-data">
                     <i class="fas fa-envelope-open"></i>
-                    <p>لا توجد رسائل واردة</p>
+                    <p>{{ __('messages.no_messages') }}</p>
                 </div>
             @endif
         </div>
@@ -99,46 +99,46 @@
         <div class="send-messages-section">
             <!-- Send General Message -->
             <div class="message-form-card">
-                <h4><i class="fas fa-paper-plane"></i> إرسال رسالة عامة</h4>
+                <h4><i class="fas fa-paper-plane"></i> {{ __('messages.send_general_message') }}</h4>
                 <form action="{{ route('messages.send') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="form-group">
-                        <label>اختر المريض *</label>
+                        <label>{{ __('messages.select_patient') }} *</label>
                         <select name="patient_id" class="form-control" required>
-                            <option value="">اختر المريض</option>
+                            <option value="">{{ __('messages.select_patient') }}</option>
                             @foreach($patients as $patient)
                                 <option value="{{ $patient->id }}">{{ $patient->name }} - {{ $patient->phone }}</option>
                             @endforeach
                         </select>
                     </div>
                     <div class="form-group">
-                        <label>عنوان الرسالة *</label>
+                        <label>{{ __('messages.subject') }}</label>
                         <input type="text" name="subject" class="form-control" required>
                     </div>
                     <div class="form-group">
-                        <label>نص الرسالة *</label>
-                        <textarea name="message" class="form-control" rows="5" required placeholder="اكتب نص الرسالة هنا..."></textarea>
+                        <label>{{ __('messages.message_text') }}</label>
+                        <textarea name="message" class="form-control" rows="5" required placeholder="{{ __('messages.message_text') }}..."></textarea>
                     </div>
                     <div class="form-group">
-                        <label>مرفق (اختياري)</label>
+                        <label>{{ __('messages.attachment') }}</label>
                         <input type="file" name="attachment" class="form-control">
                         <small class="text-muted">يمكن رفع ملفات PDF, Word, أو صور</small>
                     </div>
                     <button type="submit" class="btn btn-primary btn-block">
-                        <i class="fas fa-paper-plane"></i> إرسال الرسالة
+                        <i class="fas fa-paper-plane"></i> {{ __('messages.send_message') }}
                     </button>
                 </form>
             </div>
 
             <!-- Send Test Results -->
             <div class="message-form-card">
-                <h4><i class="fas fa-file-medical-alt"></i> إرسال نتائج التحاليل</h4>
+                <h4><i class="fas fa-file-medical-alt"></i> {{ __('messages.send_results') }}</h4>
                 <form action="{{ route('messages.send-result') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="form-group">
-                        <label>اختر حجز المريض *</label>
+                        <label>{{ __('messages.select_visit') }} *</label>
                         <select name="reservation_id" class="form-control" required>
-                            <option value="">اختر حجز المريض (Visit)</option>
+                            <option value="">{{ __('messages.select_visit') }}</option>
                             @foreach($patients as $patient)
                                 @foreach($patient->reservations as $reservation)
                                     @if($reservation->status != 'completed')
@@ -151,15 +151,15 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label>ملاحظات إضافية</label>
-                        <textarea name="additional_notes" class="form-control" rows="3" placeholder="ملاحظات حول نتيجة التحليل..."></textarea>
+                        <label>{{ __('messages.additional_notes') }}</label>
+                        <textarea name="additional_notes" class="form-control" rows="3" placeholder="{{ __('messages.additional_notes') }}..."></textarea>
                     </div>
                     <div class="form-group">
-                        <label>رفع نتيجة التحليل (PDF أو صورة)</label>
+                        <label>{{ __('messages.upload_result') }}</label>
                         <input type="file" name="result_file" class="form-control">
                     </div>
                     <button type="submit" class="btn btn-success btn-block">
-                        <i class="fas fa-file-medical-alt"></i> إرسال النتيجة
+                        <i class="fas fa-file-medical-alt"></i> {{ __('messages.send_result_btn') }}
                     </button>
                 </form>
             </div>

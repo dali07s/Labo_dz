@@ -1,12 +1,12 @@
 @extends('Adminstration.layout')
 
-@section('title', 'إدارة التحاليل')
+@section('title', __('messages.manage_analyses'))
 
 @section('content')
 <div class="section-header">
-    <h2><i class="fas fa-flask"></i> إدارة التحاليل</h2>
+    <h2><i class="fas fa-flask"></i> {{ __('messages.manage_analyses') }}</h2>
     <a href="{{ route('analyses.create') }}" class="btn btn-primary">
-        <i class="fas fa-plus"></i> إضافة تحليل جديد
+        <i class="fas fa-plus"></i> {{ __('messages.add_new_analysis') }}
     </a>
 </div>
 
@@ -18,7 +18,7 @@
         </div>
         <div class="stat-info">
             <h3>{{ $analyses->total() }}</h3>
-            <p>إجمالي التحاليل</p>
+            <p>{{ __('messages.total_analyses') }}</p>
         </div>
     </div>
     <div class="analyses-stat-card">
@@ -27,7 +27,7 @@
         </div>
         <div class="stat-info">
             <h3>{{ App\Models\Analyse::where('availability', 1)->count() }}</h3>
-            <p>التحاليل المتاحة</p>
+            <p>{{ __('messages.available_analyses') }}</p>
         </div>
     </div>
     <div class="analyses-stat-card">
@@ -36,7 +36,7 @@
         </div>
         <div class="stat-info">
             <h3>{{ App\Models\Analyse::where('availability', 0)->count() }}</h3>
-            <p>التحاليل غير المتاحة</p>
+            <p>{{ __('messages.unavailable_analyses') }}</p>
         </div>
     </div>
 </div>
@@ -48,13 +48,13 @@
             <thead>
                 <tr>
                     <th>#</th>
-                    <th>الصورة</th>
-                    <th>اسم التحليل</th>
-                    <th>الوصف</th>
-                    <th>السعر (دج)</th>
-                    <th>المدة</th>
-                    <th>الحالة</th>
-                    <th>الإجراءات</th>
+                    <th>{{ __('messages.image') }}</th>
+                    <th>{{ __('messages.analysis_name') }}</th>
+                    <th>{{ __('messages.description') }}</th>
+                    <th>{{ __('messages.price') }} ({{ __('messages.price_unit', ['unit' => 'دج']) ?? 'دج' }})</th>
+                    <th>{{ __('messages.duration') }}</th>
+                    <th>{{ __('messages.status') }}</th>
+                    <th>{{ __('messages.actions') }}</th>
                 </tr>
             </thead>
             <tbody>
@@ -76,7 +76,7 @@
                     <td class="description-cell">
                         <span class="description-text">{{ Str::limit($analysis->description, 50) }}</span>
                         @if(strlen($analysis->description) > 50)
-                            <button class="btn-show-more" onclick="toggleDescription(this)">عرض المزيد</button>
+                            <button class="btn-show-more" onclick="toggleDescription(this)">{{ __('messages.show_more') }}</button>
                         @endif
                     </td>
                     <td>{{ number_format($analysis->price, 0, ',', '.') }}</td>
@@ -88,7 +88,7 @@
                             <button type="submit" class="status-toggle {{ $analysis->availability ? 'available' : 'unavailable' }}">
                                 <i class="fas {{ $analysis->availability ? 'fa-toggle-on' : 'fa-toggle-off' }}"></i>
 
-                                {{ $analysis->availability ? 'متاح' : 'غير متاح' }}
+                                {{ $analysis->availability ? __('messages.available') : __('messages.unavailable') }}
                             </button>
                         </form>
                     </td>
@@ -100,7 +100,7 @@
                             <form action="{{ route('analyses.destroy', $analysis->id) }}" method="POST" class="d-inline">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn-delete" onclick="return confirm('هل أنت متأكد من حذف هذا التحليل؟')">
+                                <button type="submit" class="btn-delete" onclick="return confirm('{{ __('messages.delete_analysis_confirm') }}')">
                                     <i class="fas fa-trash"></i>
                                 </button>
                             </form>
@@ -118,7 +118,7 @@
     @else
         <div class="no-data">
             <i class="fas fa-flask"></i>
-            <p>لا توجد تحاليل مضافة حتى الآن</p>
+            <p>{{ __('messages.no_analyses_added') }}</p>
         </div>
     @endif
 </div>

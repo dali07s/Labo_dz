@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="{{ app()->getLocale() }}" dir="{{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }}">
 
 <head>
     <meta charset="UTF-8" />
@@ -31,13 +31,24 @@
     <header class="admin-header">
         <h1>
             <i class="fas fa-tachometer-alt"></i>
-            لوحة تحكم مخبر المنيعة
+            {{ __('messages.admin_panel') }}
         </h1>
-        <div class="admin-actions">
+        <div class="admin-actions d-flex align-items-center gap-3">
+            <div class="lang-switcher">
+                @if(app()->getLocale() == 'ar')
+                    <a href="{{ route('lang.switch', 'fr') }}" class="btn btn-outline-light btn-sm px-3">
+                        <i class="fas fa-globe me-1"></i> Français
+                    </a>
+                @else
+                    <a href="{{ route('lang.switch', 'ar') }}" class="btn btn-outline-light btn-sm px-3">
+                        <i class="fas fa-globe me-1"></i> العربية
+                    </a>
+                @endif
+            </div>
             <form action="{{ route('administrator.logout') }}" method="POST" style="display: inline;">
                 @csrf
-                <button type="submit" class="btn btn-danger">
-                    <i class="fas fa-sign-out-alt"></i> خروج
+                <button type="submit" class="btn btn-danger btn-sm">
+                    <i class="fas fa-sign-out-alt"></i> {{ __('messages.logout') }}
                 </button>
             </form>
         </div>
@@ -47,19 +58,19 @@
         <nav class="admin-sidebar">
             <ul class="sidebar-menu">
                 <li><a href="{{ route('dashboard') }}" class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">
-                        <i class="fas fa-tachometer-alt"></i> لوحة التحكم
+                        <i class="fas fa-tachometer-alt"></i> {{ __('messages.dashboard') }}
                     </a></li>
                 <li><a href="{{ route('reservation.requests') }}" class="{{ request()->routeIs('reservation.requests*') ? 'active' : '' }}">
-                        <i class="fas fa-clock"></i> طلبات الحجز
+                        <i class="fas fa-clock"></i> {{ __('messages.reservation_requests') }}
                     </a></li>
                 <li><a href="{{ route('reservations') }}" class="{{ request()->routeIs('reservations') ? 'active' : '' }}">
-                        <i class="fas fa-calendar-check"></i> إدارة الحجوزات
+                        <i class="fas fa-calendar-check"></i> {{ __('messages.manage_reservations') }}
                     </a></li>
                 <li><a href="{{ route('analyses') }}" class="{{ request()->routeIs('analyses') ? 'active' : '' }}">
-                        <i class="fas fa-flask"></i> إدارة التحاليل
+                        <i class="fas fa-flask"></i> {{ __('messages.manage_analyses') }}
                     </a></li>
                 <li><a href="{{ route('messages') }}" class="{{ request()->routeIs('messages') ? 'active' : '' }}">
-                        <i class="fas fa-envelope"></i> إرسال الرسائل
+                        <i class="fas fa-envelope"></i> {{ __('messages.send_messages') }}
                     </a></li>
             </ul>
         </nav>
