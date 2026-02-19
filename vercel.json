@@ -3,13 +3,20 @@
     "builds": [
         {
             "src": "public/index.php",
-            "use": "@vercel/php"
+            "use": "@vercel/php",
+            "config": {
+                "installCommand": "composer install --no-dev --optimize-autoloader && npm install && npm run build"
+            }
         }
     ],
     "routes": [
         {
-            "src": "/(css|js|build|storage|images)/(.*)",
+            "src": "/(css|js|build|assets|storage|images)/(.*)",
             "dest": "/public/$1/$2"
+        },
+        {
+            "src": "/(favicon\\.ico|robots\\.txt)",
+            "dest": "/public/$1"
         },
         {
             "src": "/(.*)",
