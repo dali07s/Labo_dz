@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html dir="rtl" lang="ar">
+<html dir="{{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }}" lang="{{ app()->getLocale() }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تذكير بموعد التحليل</title>
+    <title>{{ __('messages.appointment_reminder') }}</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -62,47 +62,47 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>مخبر المنيعة</h1>
-            <h2>تذكير بموعد التحليل الطبي</h2>
+            <h1>{{ __('messages.lab_team') }}</h1>
+            <h2>{{ __('messages.appointment_reminder') }}</h2>
         </div>
 
         <div class="content">
-            <p>السيد/ة <span class="highlight">{{ $patient->name }}</span>،</p>
+            <p>{{ __('messages.mr_mrs') }} <span class="highlight">{{ $patient->name }}</span>،</p>
 
-            <p>نود تذكيركم بموعد تحليلكم الطبي المقرر غداً.</p>
+            <p>{{ __('messages.appointment_scheduled_tomorrow') }}</p>
 
             <div class="appointment-details">
-                <h3>تفاصيل الموعد:</h3>
-                <p><strong>التحاليل المطلوبة:</strong></p>
+                <h3>{{ __('messages.appointment_details') }}:</h3>
+                <p><strong>{{ __('messages.requested_analyses_list') }}:</strong></p>
                 <ul>
                     @foreach($analyses as $analysis)
                         <li>{{ $analysis->name }}</li>
                     @endforeach
                 </ul>
-                <p><strong>التاريخ:</strong> {{ $appointment_date }}</p>
-                <p><strong>الوقت:</strong> {{ $appointment_time }}</p>
+                <p><strong>{{ __('messages.date') }}:</strong> {{ $appointment_date }}</p>
+                <p><strong>{{ __('messages.time') }}:</strong> {{ $appointment_time }}</p>
                 @if($patient->phone)
-                <p><strong>رقم الهاتف:</strong> {{ $patient->phone }}</p>
+                <p><strong>{{ __('messages.phone') }}:</strong> {{ $patient->phone }}</p>
                 @endif
             </div>
 
             <div class="important-note">
-                <h4>ملاحظات مهمة:</h4>
+                <h4>{{ __('messages.important_notes') }}:</h4>
                 <ul>
-                    <li>يرجى الحضور قبل 15 دقيقة من الموعد المحدد</li>
-                    <li>احضر بطاقة الهوية الشخصية</li>
-                    <li>اتبع تعليمات الاستعداد الخاصة بالتحليل</li>
-                    <li>في حالة عدم القدرة على الحضور، يرجى إبلاغنا مسبقاً</li>
+                    <li>{{ __('messages.arrive_15_mins_early') }}</li>
+                    <li>{{ __('messages.bring_id') }}</li>
+                    <li>{{ __('messages.follow_prep_instructions') }}</li>
+                    <li>{{ __('messages.inform_if_absent') }}</li>
                 </ul>
             </div>
 
-            <p>إذا كان لديكم أي استفسار، فلا تترددوا في الاتصال بنا.</p>
+            <p>{{ __('messages.any_questions_contact_us') }}</p>
         </div>
 
         <div class="footer">
-            <p>مع تحيات،<br>فريق مخبر المنيعة</p>
-            <p>هذا البريد الإلكتروني مرسل تلقائياً، يرجى عدم الرد عليه</p>
-            <p>للتواصل معنا: {{ config('mail.from.address') }}</p>
+            <p>{{ __('messages.best_regards') }}<br>{{ __('messages.lab_team') }}</p>
+            <p>{{ __('messages.auto_generated_email') }}</p>
+            <p>{{ __('messages.contact_us_at') }} {{ config('mail.from.address') }}</p>
         </div>
     </div>
 </body>

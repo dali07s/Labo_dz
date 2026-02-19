@@ -71,7 +71,7 @@ class reservationsController extends Controller
         $reservation = Reservation::findOrFail($id);
         $reservation->update(['status' => $request->status]);
 
-        return redirect()->route('reservations')->with('success', 'تم تحديث حالة الحجز بنجاح');
+        return redirect()->route('reservations')->with('success', __('messages.responses.reservation_updated'));
     }
 
     // Show reservation requests
@@ -198,9 +198,9 @@ class reservationsController extends Controller
                 'admin_notes' => $request->admin_notes,
             ]);
 
-            return redirect()->route('reservation.requests')->with('success', 'تم تأكيد الطلب وإنشاء الحجز بنجاح');
+            return redirect()->route('reservation.requests')->with('success', __('messages.responses.request_confirmed'));
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'حدث خطأ أثناء تأكيد الطلب: '.$e->getMessage());
+            return redirect()->back()->with('error', __('messages.responses.confirmation_error', ['error' => $e->getMessage()]));
         }
     }
 
@@ -222,7 +222,7 @@ class reservationsController extends Controller
             'admin_notes' => $request->admin_notes,
         ]);
 
-        return redirect()->route('reservation.requests')->with('success', 'تم رفض الطلب بنجاح');
+        return redirect()->route('reservation.requests')->with('success', __('messages.responses.request_rejected'));
     }
 
     /**
@@ -295,7 +295,7 @@ class reservationsController extends Controller
         $result = $this->checkExecutionEligibility($eligibilityService, $id);
         $data = json_decode($result->getContent(), true);
 
-        return redirect()->route('reservations')->with('success', 'تم تقييم الأهلية بنجاح. الحالة الحالية: '.$data['status']);
+        return redirect()->route('reservations')->with('success', __('messages.responses.eligibility_assessed', ['status' => $data['status']]));
     }
 
     /**
@@ -399,12 +399,12 @@ class reservationsController extends Controller
         if (request()->ajax() || request()->wantsJson()) {
             return response()->json([
                 'success' => true,
-                'message' => 'تم تحديث حالة أهلية جميع التحاليل بنجاح.',
+                'message' => __('messages.responses.all_eligibility_updated'),
                 'results' => $results,
             ]);
         }
 
-        return redirect()->route('reservations')->with('success', 'تم تحديث حالة أهلية جميع التحاليل بنجاح.');
+        return redirect()->route('reservations')->with('success', __('messages.responses.all_eligibility_updated'));
     }
 
     /**
@@ -425,11 +425,11 @@ class reservationsController extends Controller
             return response()->json([
                 'success' => true,
                 'status' => $resAnalysis->status,
-                'message' => 'تم تحديث حالة التحليل بنجاح.',
+                'message' => __('messages.responses.analysis_status_updated'),
             ]);
         }
 
-        return back()->with('success', 'تم تحديث حالة التحليل بنجاح.');
+        return back()->with('success', __('messages.responses.analysis_status_updated'));
     }
 
     /**

@@ -16,12 +16,16 @@ class Analyse extends Model
      */
     protected $fillable = [
         'name',
+        'name_fr',
         'description',
+        'description_fr',
         'normal_range',
         'code',
         'price',
         'duration',
+        'duration_fr',
         'preparation_instructions',
+        'preparation_instructions_fr',
         'image',
         'availability',
     ];
@@ -30,6 +34,42 @@ class Analyse extends Model
         'price' => 'decimal:2',
         'availability' => 'boolean',
     ];
+
+    public function getNameAttribute($value)
+    {
+        if (app()->getLocale() === 'fr' && $this->name_fr) {
+            return $this->name_fr;
+        }
+
+        return $value;
+    }
+
+    public function getDescriptionAttribute($value)
+    {
+        if (app()->getLocale() === 'fr' && $this->description_fr) {
+            return $this->description_fr;
+        }
+
+        return $value;
+    }
+
+    public function getDurationAttribute($value)
+    {
+        if (app()->getLocale() === 'fr' && $this->duration_fr) {
+            return $this->duration_fr;
+        }
+
+        return $value;
+    }
+
+    public function getPreparationInstructionsAttribute($value)
+    {
+        if (app()->getLocale() === 'fr' && $this->preparation_instructions_fr) {
+            return $this->preparation_instructions_fr;
+        }
+
+        return $value;
+    }
 
     public function histories()
     {

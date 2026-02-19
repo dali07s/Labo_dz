@@ -70,12 +70,12 @@ class Labo_dzController extends Controller
 
             // Redirect with success message and trigger PDF download
             return redirect()->back()
-                ->with('success', "تم إرسال طلب الحجز للتحاليل التالية: {$analysisNames} للسيد/ة {$request->name} بنجاح، سنتصل بك على الرقم {$request->phone} لتأكيد الحجز")
+                ->with('success', __('messages.responses.booking_request_sent', ['analyses' => $analysisNames, 'name' => $request->name, 'phone' => $request->phone]))
                 ->with('download_pdf', $requestReservation->id);
         } catch (\Exception $e) {
             Log::error('Booking error:', ['error' => $e->getMessage()]);
 
-            return redirect()->back()->with('error', 'حدث خطأ أثناء إرسال طلب الحجز، يرجى المحاولة مرة أخرى');
+            return redirect()->back()->with('error', __('messages.responses.booking_error'));
         }
     }
 
@@ -99,11 +99,11 @@ class Labo_dzController extends Controller
                 'message' => $request->message,
             ]);
 
-            return redirect()->back()->with('success', 'تم إرسال رسالتك بنجاح وسنرد عليك في أقرب وقت');
+            return redirect()->back()->with('success', __('messages.responses.contact_sent'));
         } catch (\Exception $e) {
             Log::error('Message sending error:', ['error' => $e->getMessage()]);
 
-            return redirect()->back()->with('error', 'حدث خطأ أثناء إرسال الرسالة، يرجى المحاولة مرة أخرى');
+            return redirect()->back()->with('error', __('messages.responses.generic_error'));
         }
     }
 

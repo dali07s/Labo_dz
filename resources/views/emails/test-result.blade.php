@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html dir="rtl" lang="ar">
+<html dir="{{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }}" lang="{{ app()->getLocale() }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -60,25 +60,25 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>مخبر المنيعة</h1>
-            <h2>نتيجة التحليل</h2>
+            <h1>{{ __('messages.lab_team') }}</h1>
+            <h2>{{ __('messages.test_result_title') }}</h2>
         </div>
         
         <div class="content">
             <div class="result-info">
-                <p><strong>اسم المريض:</strong> {{ $patient->name }}</p>
-                <p><strong>تاريخ الحجز:</strong> {{ $reservation->analysis_date }}</p>
-                <p><strong>وقت الحجز:</strong> {{ $reservation->time }}</p>
+                <p><strong>{{ __('messages.patient_name') }}:</strong> {{ $patient->name }}</p>
+                <p><strong>{{ __('messages.reservation_date') }}:</strong> {{ $reservation->analysis_date }}</p>
+                <p><strong>{{ __('messages.reservation_time') }}:</strong> {{ $reservation->time }}</p>
             </div>
             
             <div class="analysis-details">
-                <h3>التحاليل المشمولة في هذه النتيجة:</h3>
+                <h3>{{ __('messages.included_analyses') }}:</h3>
                 <ul>
                     @foreach($reservation->reservationAnalyses as $ra)
                         <li>
                             <strong>{{ $ra->analyse->name }}</strong>
                             @if($ra->analyse->normal_range)
-                                <br><small>المعدل الطبيعي: {{ $ra->analyse->normal_range }}</small>
+                                <br><small>{{ __('messages.normal_range') }}: {{ $ra->analyse->normal_range }}</small>
                             @endif
                         </li>
                     @endforeach
@@ -87,22 +87,22 @@
             
             @if($additional_notes)
             <div class="notes">
-                <h3>ملاحظات إضافية:</h3>
+                <h3>{{ __('messages.additional_notes') }}:</h3>
                 <p>{{ $additional_notes }}</p>
             </div>
             @endif
             
             <div class="instructions">
-                <h3>توصيات:</h3>
-                <p>• يرجى مراجعة الطبيب المختص لتحليل النتائج</p>
-                <p>• الحفاظ على مواعيد المتابعة الدورية</p>
-                <p>• الالتزام بتعليمات الطبيب فيما يتعلق بالعلاج أو النظام الغذائي</p>
+                <h3>{{ __('messages.recommendations') }}:</h3>
+                <p>• {{ __('messages.consult_doctor') }}</p>
+                <p>• {{ __('messages.maintain_follow_up') }}</p>
+                <p>• {{ __('messages.follow_doctor_instructions') }}</p>
             </div>
         </div>
         
         <div class="footer">
-            <p>مع تحيات،<br>فريق مخبر المنيعة</p>
-            <p>هذا البريد الإلكتروني مرسل تلقائياً، يرجى عدم الرد عليه</p>
+            <p>{{ __('messages.best_regards') }}<br>{{ __('messages.lab_team') }}</p>
+            <p>{{ __('messages.auto_generated_email') }}</p>
         </div>
     </div>
 </body>

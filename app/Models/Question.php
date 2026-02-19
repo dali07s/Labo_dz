@@ -16,6 +16,7 @@ class Question extends Model
      */
     protected $fillable = [
         'question',
+        'question_fr',
         'analyse_id',
         'type',
         'parent_question_id',
@@ -24,6 +25,14 @@ class Question extends Model
         'gender_condition',
         'order',
     ];
+
+    public function getQuestionAttribute($value)
+    {
+        if (app()->getLocale() === 'fr' && $this->question_fr) {
+            return $this->question_fr;
+        }
+        return $value;
+    }
 
     /**
      * Get the analysis that owns the question.

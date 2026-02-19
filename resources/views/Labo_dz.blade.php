@@ -197,12 +197,12 @@
                         @if($analysis->availability == 1)
                        <div class="checkbox-item">
                   <input type="checkbox" name="analysisTypes[]" value="{{ $analysis->id }}" id="analysis_{{ $analysis->id }}">
-                 <label for="analysis_{{ $analysis->id }}">{{ $analysis->name }}</label>
+                 <label for="analysis_{{ $analysis->id }}">{{ $analysis->name }} ({{ $analysis->code }})</label>
                   </div>
                        @endif
                            @endforeach
                            </div>
-                            <small class="form-text text-muted">يمكنك اختيار تحليل واحد أو أكثر من القائمة أعلاه</small>
+                            <small class="form-text text-muted">{{ __('messages.can_choose_multiple') }}</small>
                 </div>
                 <div class="form-group">
                     <label for="date">{{ __('messages.date') }}</label>

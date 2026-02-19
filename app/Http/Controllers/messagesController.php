@@ -54,10 +54,10 @@ class messagesController extends Controller
                 }
             });
 
-            return redirect()->route('messages')->with('success', 'تم إرسال الرسالة بنجاح إلى ' . $patient->name);
+            return redirect()->route('messages')->with('success', __('messages.responses.message_sent', ['name' => $patient->name]));
 
         } catch (\Exception $e) {
-            return redirect()->route('messages')->with('error', 'فشل في إرسال الرسالة: ' . $e->getMessage());
+            return redirect()->route('messages')->with('error', __('messages.responses.message_send_failed', ['error' => $e->getMessage()]));
         }
     }
 
@@ -103,10 +103,10 @@ class messagesController extends Controller
                 }
             });
 
-            return redirect()->route('messages')->with('success', 'تم إرسال نتائج التحاليل بنجاح إلى ' . $reservation->patient->name);
+            return redirect()->route('messages')->with('success', __('messages.responses.results_sent', ['name' => $reservation->patient->name]));
 
         } catch (\Exception $e) {
-            return redirect()->route('messages')->with('error', 'فشل في إرسال النتائج: ' . $e->getMessage());
+            return redirect()->route('messages')->with('error', __('messages.responses.results_send_failed', ['error' => $e->getMessage()]));
         }
     }
 
@@ -115,7 +115,7 @@ class messagesController extends Controller
         $message = Message::findOrFail($id);
         $message->delete();
 
-        return redirect()->route('messages')->with('success', 'تم حذف الرسالة بنجاح');
+        return redirect()->route('messages')->with('success', __('messages.responses.message_deleted'));
     }
 
     public function markAsRead($id)
@@ -123,6 +123,6 @@ class messagesController extends Controller
         $message = Message::findOrFail($id);
         $message->update(['is_read' => true]);
 
-        return redirect()->route('messages')->with('success', 'تم تعيين الرسالة كمقروءة بنجاح');
+        return redirect()->route('messages')->with('success', __('messages.responses.message_marked_read'));
     }
 }

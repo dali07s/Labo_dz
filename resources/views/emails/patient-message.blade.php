@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html dir="rtl" lang="ar">
+<html dir="{{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }}" lang="{{ app()->getLocale() }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -50,14 +50,14 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>مخبر المنيعة</h1>
+            <h1>{{ __('messages.lab_team') }}</h1>
             <h2>{{ $subject }}</h2>
         </div>
         
         <div class="content">
             <div class="patient-info">
-                <p><strong>السيد/ة:</strong> {{ $patient->name }}</p>
-                <p><strong>البريد الإلكتروني:</strong> {{ $patient->email }}</p>
+                <p><strong>{{ __('messages.mr_mrs') }}:</strong> {{ $patient->name }}</p>
+                <p><strong>{{ __('messages.email') }}:</strong> {{ $patient->email }}</p>
             </div>
             
             <div class="message-content">
@@ -66,8 +66,8 @@
         </div>
         
         <div class="footer">
-            <p>مع تحيات،<br>فريق مخبر المنيعة</p>
-            <p>هذا البريد الإلكتروني مرسل تلقائياً، يرجى عدم الرد عليه</p>
+            <p>{{ __('messages.best_regards') }}<br>{{ __('messages.lab_team') }}</p>
+            <p>{{ __('messages.auto_generated_email') }}</p>
         </div>
     </div>
 </body>
