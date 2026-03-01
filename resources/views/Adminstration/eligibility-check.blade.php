@@ -62,7 +62,7 @@
                                                                    id="option_{{ $option->id }}" 
                                                                    value="{{ $option->id }}" 
                                                                    data-option-value="{{ $option->value }}"
-                                                                   required>
+                                                                   {{ $shouldShow ? 'required' : '' }}>
                                                         @endif
                                                         <label class="form-check-label px-2" for="option_{{ $option->id }}">
                                                             {{ $option->text }}

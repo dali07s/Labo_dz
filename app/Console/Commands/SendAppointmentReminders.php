@@ -37,9 +37,12 @@ class SendAppointmentReminders extends Command
     {
         $this->info('Starting appointment reminders process...');
 
+        // Set locale to ensure translations are correct in emails
+        app()->setLocale('fr');
+
         // Get reservations for tomorrow that haven't had a reminder sent yet
         $tomorrow = Carbon::tomorrow()->toDateString();
-        $appointments = Reservation::with(['patient', 'reservationAnalyses.analyse', 'reminders'])
+        $appointments = Reservation::with(['patient', 'analyses', 'reminders'])
             ->where('status', 'booked')
             ->where('analysis_date', $tomorrow)
             ->whereDoesntHave('reminders', function ($query) {
@@ -69,9 +72,10 @@ class SendAppointmentReminders extends Command
                     $reminder = Reminder::create([
                         'reservation_id' => $appointment->id,
                         'patient_id' => $appointment->patient_id,
-                        'analyse_id' => $appointment->reservationAnalyses->first()->analysis_id ?? 0, // Fallback
+                        'analyse_id' => $appointment->analyses->first()->id ?? 0, // Better fallback using relationship
                         'scheduled_for' => Carbon::parse($appointment->analysis_date)->subDay(),
                         'history_id' => null,
+                        'is_sent' => false,
                     ]);
                 } else {
                     $reminder = $existingReminder;
@@ -79,16 +83,21 @@ class SendAppointmentReminders extends Command
 
                 // Send email
                 if ($appointment->patient->email) {
-                    $analyses = $appointment->reservationAnalyses->map(fn($ra) => $ra->analyse);
+                    $analyses = $appointment->analyses;
                     
+                    if ($analyses->isEmpty()) {
+                        $this->warn("No analyses for reservation ID: {$appointment->id}. Skipping email.");
+                        continue;
+                    }
+
                     Mail::send('emails.appointment-reminder', [
                         'patient' => $appointment->patient,
                         'analyses' => $analyses,
-                        'appointment_date' => Carbon::parse($appointment->analysis_date)->format('Y-m-d'),
+                        'appointment_date' => Carbon::parse($appointment->analysis_date)->format('d/m/Y'),
                         'appointment_time' => $appointment->time,
                     ], function ($message) use ($appointment) {
                         $message->to($appointment->patient->email)
-                                ->subject('تذكير بموعد التحاليل الطبية - مخبر المنيعة');
+                                ->subject(__('messages.appointment_reminder') . ' - Labo.dz');
                     });
 
                     // Update reminder as sent

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Confirmation de Rendez-vous - Labo El Meniaa</title>
+    <title>Confirmation de Rendez-vous - Labo.dz</title>
     <style>
         @page {
             margin: 1.5cm;
@@ -181,9 +181,9 @@
 
 <body>
     <div class="header">
-        <h1>LABORATOIRE EL MENIAA</h1>
+        <h1>LABORATOIRE LABO.DZ</h1>
         <p>Expertise en Analyses Médicales & Diagnostics</p>
-        <p>Cité de l'Indépendance, El Meniaa, Algérie</p>
+        <p>Cité de l'Indépendance, Labo.dz, Algérie</p>
     </div>
 
     <div class="doc-title">
@@ -214,10 +214,6 @@
             <tr>
                 <td class="label">Date de Naissance :</td>
                 <td class="value">{{ \Carbon\Carbon::parse($reservation->birth_date)->format('d/m/Y') }}</td>
-            </tr>
-            <tr>
-                <td class="label">Date du Rendez-vous :</td>
-                <td class="value">{{ \Carbon\Carbon::parse($reservation->date)->format('d/m/Y') }} à {{ $reservation->time }}</td>
             </tr>
         </table>
     </div>
@@ -284,8 +280,8 @@
     </div>
 
     <div class="footer">
-        <p><strong>Adresse :</strong> Cité de l'Indépendance, El Meniaa | <strong>Tel :</strong> 0550 12 34 56</p>
-        <p><strong>E-mail :</strong> info@labo-elmeniaa.dz | <strong>Horaires :</strong> 08:00 - 18:00</p>
+        <p><strong>Adresse :</strong> Cité de l'Indépendance, Labo.dz | <strong>Tel :</strong> 0550 12 34 56</p>
+        <p><strong>E-mail :</strong> info@labo-dz.com | <strong>Horaires :</strong> 08:00 - 18:00</p>
         <p style="margin-top: 15px;">Document généré le {{ \Carbon\Carbon::now()->format('d/m/Y à H:i') }}</p>
     </div>
 </body>

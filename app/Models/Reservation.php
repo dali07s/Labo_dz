@@ -15,7 +15,7 @@ class Reservation extends Model
         'time',
         'status',
         'result_notes',
-        'result_file_path'
+        'result_file_path',
     ];
 
     public function patient()
@@ -30,7 +30,7 @@ class Reservation extends Model
 
     public function analyses()
     {
-        return $this->belongsToMany(Analyse::class, 'reservation_analyses');
+        return $this->belongsToMany(Analyse::class, 'reservation_analyses', 'reservation_id', 'analysis_id');
     }
 
     public function reminders()

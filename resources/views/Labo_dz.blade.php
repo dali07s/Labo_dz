@@ -275,7 +275,7 @@
                 <h3>{{ __('messages.contact_info') }}</h3>
                 <p><i class="fas fa-map-marker-alt"></i> {{ __('messages.address') }}</p>
                 <p><i class="fas fa-phone"></i> {{ __('messages.phone_val') }}</p>
-                <p><i class="fas fa-envelope"></i> {{ __('messages.email_val') }}</p>
+                <p><i class="fas fa-envelope"></i> labo.dz.2026@gmail.com</p>
                 <p><i class="fas fa-clock"></i> {{ __('messages.work_hours') }}</p>
             </div>
         </div>

@@ -100,7 +100,7 @@
         </div>
 
         <div class="footer">
-            <p>{{ __('messages.best_regards') }}<br>{{ __('messages.lab_team') }}</p>
+            <p>{{ __('messages.best_regards') }}<br>Labo.dz</p>
             <p>{{ __('messages.auto_generated_email') }}</p>
             <p>{{ __('messages.contact_us_at') }} {{ config('mail.from.address') }}</p>
         </div>
