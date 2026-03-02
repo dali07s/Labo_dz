@@ -37,16 +37,7 @@ WORKDIR /app
 COPY composer.json composer.lock ./
 RUN composer install --no-dev --no-scripts --no-autoloader --prefer-dist
 
-# Stage 3: Node Builder (Vite)
-FROM node:18-alpine as node_builder
-WORKDIR /app
-COPY package.json package-lock.json vite.config.js ./
-RUN npm install
-COPY resources ./resources
-COPY public ./public
-RUN npm run build
-
-# Stage 4: Final Image
+# Stage 3: Final Image
 FROM base as final
 
 # Copy application files
@@ -54,9 +45,6 @@ COPY . .
 
 # Copy vendor from php_builder
 COPY --from=php_builder /app/vendor ./vendor
-
-# Copy built assets from node_builder
-COPY --from=node_builder /app/public/build ./public/build
 
 # Finish Composer installation (autoload, scripts)
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
