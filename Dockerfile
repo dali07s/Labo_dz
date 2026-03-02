@@ -53,8 +53,9 @@ COPY --from=php_builder /app/vendor ./vendor
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 RUN composer dump-autoload --optimize --no-dev
 
-# Set permissions
-RUN chown -R www-data:www-data /var/www/html \
+# Ensure Laravel writable directories exist and set permissions
+RUN mkdir -p /var/www/html/storage /var/www/html/bootstrap/cache \
+    && chown -R www-data:www-data /var/www/html \
     && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 
 # Expose the port (Render will override this)
