@@ -1,44 +1,76 @@
-FROM php:8.1-fpm-alpine
+# Stage 1: PHP Base
+FROM php:8.1-apache as base
 
 # Install system dependencies
-RUN apk add --no-cache \
-    curl \
+RUN apt-get update && apt-get install -y \
     libpng-dev \
     libxml2-dev \
-    oniguruma-dev \
-    openssl-dev \
-    freetype-dev \
-    jpeg-dev \
+    libonig-dev \
     libzip-dev \
     zip \
     unzip \
     git \
-    && docker-php-ext-install \
-    pdo_mysql \
-    mbstring \
-    exif \
-    pcntl \
-    bcmath \
-    gd \
-    zip
+    curl \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Install Composer
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+# Install PHP extensions
+RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip intl opcache
+
+# Enable Apache mod_rewrite
+RUN a2enmod rewrite
+
+# Configure Apache for Render (listen on $PORT)
+ENV PORT=80
+RUN sed -i 's/80/${PORT}/g' /etc/apache2/sites-available/000-default.conf /etc/apache2/ports.conf
+
+# Set DocumentRoot to /var/www/html/public
+ENV APACHE_DOCUMENT_ROOT /var/www/html/public
+RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/000-default.conf
+RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
 
 # Set working directory
-WORKDIR /var/www
+WORKDIR /var/www/html
+
+# Stage 2: PHP Builder (Composer)
+FROM composer:latest as php_builder
+WORKDIR /app
+COPY composer.json composer.lock ./
+RUN composer install --no-dev --no-scripts --no-autoloader --prefer-dist
+
+# Stage 3: Node Builder (Vite)
+FROM node:18-alpine as node_builder
+WORKDIR /app
+COPY package.json package-lock.json vite.config.js ./
+RUN npm install
+COPY resources ./resources
+COPY public ./public
+RUN npm run build
+
+# Stage 4: Final Image
+FROM base as final
 
 # Copy application files
-COPY . /var/www
+COPY . .
 
-# Install PHP dependencies
-RUN composer install --no-dev --optimize-autoloader
+# Copy vendor from php_builder
+COPY --from=php_builder /app/vendor ./vendor
 
-# Set proper permissions
-RUN chown -R www-data:www-data /var/www
+# Copy built assets from node_builder
+COPY --from=node_builder /app/public/build ./public/build
 
-# Expose port 9000 for PHP-FPM
-EXPOSE 9000
+# Finish Composer installation (autoload, scripts)
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+RUN composer dump-autoload --optimize --no-dev
 
-# Start PHP-FPM
-CMD ["php-fpm"]
+# Set permissions
+RUN chown -R www-data:www-data /var/www/html \
+    && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
+
+# Expose the port (Render will override this)
+EXPOSE 80
+
+# Use entrypoint script
+COPY docker-entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+
+ENTRYPOINT ["docker-entrypoint.sh"]
