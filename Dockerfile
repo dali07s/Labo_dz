@@ -1,5 +1,5 @@
 # Stage 1: PHP Base
-FROM php:8.1-apache as base
+FROM php:8.1-apache AS base
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
@@ -32,13 +32,14 @@ RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf
 WORKDIR /var/www/html
 
 # Stage 2: PHP Builder (Composer)
-FROM composer:2.7-php8.1 as php_builder
+FROM php:8.1-cli AS php_builder
 WORKDIR /app
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 COPY composer.json composer.lock ./
 RUN composer install --no-dev --no-scripts --no-autoloader --prefer-dist
 
 # Stage 3: Final Image
-FROM base as final
+FROM base AS final
 
 # Copy application files
 COPY . .
@@ -47,7 +48,7 @@ COPY . .
 COPY --from=php_builder /app/vendor ./vendor
 
 # Finish Composer installation (autoload, scripts)
-COPY --from=composer:2.7-php8.1 /usr/bin/composer /usr/bin/composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 RUN composer dump-autoload --optimize --no-dev
 
 # Set permissions
