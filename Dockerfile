@@ -32,7 +32,7 @@ RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf
 WORKDIR /var/www/html
 
 # Stage 2: PHP Builder (Composer)
-FROM composer:latest as php_builder
+FROM composer:2.7-php8.1 as php_builder
 WORKDIR /app
 COPY composer.json composer.lock ./
 RUN composer install --no-dev --no-scripts --no-autoloader --prefer-dist
@@ -47,7 +47,7 @@ COPY . .
 COPY --from=php_builder /app/vendor ./vendor
 
 # Finish Composer installation (autoload, scripts)
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+COPY --from=composer:2.7-php8.1 /usr/bin/composer /usr/bin/composer
 RUN composer dump-autoload --optimize --no-dev
 
 # Set permissions
